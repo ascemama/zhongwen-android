@@ -60,6 +60,29 @@ var zhongwenMain = {
       let dictData = await loadDictData();
       return new ZhongwenDictionary(...dictData);
     },
+    init: function(){
+      let optionsPromise = browser.storage.sync.get({
+        options: {
+          'popupcolor': 'yellow',
+          'tonecolors': 'yes',
+          'fontSize': 'small',
+          'skritterTLD': 'com',
+          'zhuyin': 'no',
+          'grammar': 'yes'
+        }
+      })
+      let dictionaryPromise = zhongwenMain.loadDictionary()
+     // let enabled = 1
+      //let enablePromise = browser.storage.local.set({enabled})
+  
+      Promise.all([optionsPromise, dictionaryPromise]).then(
+        ([storage, dictionary]) => {
+  
+          this.dict = dictionary;
+          this.options=storage.options;
+        })
+
+    },
 
     // The callback for onActivated.
     // Just sends a message to the tab to enable itself if it hasn't already.
@@ -92,6 +115,9 @@ var zhongwenMain = {
             }
         });
     },
+  sendConfigToContent: function(){
+
+  },
 
   enable: function(tab) {
    // enable: function(){
@@ -125,8 +151,8 @@ var zhongwenMain = {
             type: 'showPopup',
             isHelp: true
           }).catch(reportError)
-        //}
-
+        }
+        /*
         browser.browserAction.setBadgeBackgroundColor({
           'color': [255, 0, 0, 255]
         })
@@ -134,13 +160,14 @@ var zhongwenMain = {
         browser.browserAction.setBadgeText({
           'text': 'On'
         })
-
+        
         browser.contextMenus.create({
           title: 'Open word list',
           id: 'wordlist-page',
           onclick: zhongwenMain.wordlistTab,
           contexts: ['page']
         })
+        */
       })
   },
 
@@ -152,13 +179,13 @@ var zhongwenMain = {
         // Delete dictionary object after we implement it
         delete this.dict;
 
-        browser.browserAction.setBadgeBackgroundColor({
+            /*   browser.browserAction.setBadgeBackgroundColor({
           "color": [0, 0, 0, 0]
         });
         browser.browserAction.setBadgeText({
           "text": ""
         });
-
+          */
         // Send a disable message to all browsers.
         browser.windows.getAll({
           "populate": true
@@ -231,4 +258,5 @@ var zhongwenMain = {
 };
 
 
-zhongwenMain.enable(browser.tabs.getCurrent());
+//browser.tabs.getCurrent().then(t => { zhongwenMain.enable(t);});
+zhongwenMain.init();

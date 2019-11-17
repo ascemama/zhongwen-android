@@ -78,6 +78,10 @@ browser.runtime.onMessage.addListener(function(request, sender, response) {
             }
 
             break;
+        case 'config':
+            let     abc=zhongwenMain;
+             return Promise.resolve(zhongwenMain.options);
+
         default:
             // ignore
     }

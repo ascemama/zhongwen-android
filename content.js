@@ -707,12 +707,18 @@ var zhongwenContent = {
             tdata.prevSelView = doc.defaultView;
         }
 
+            let a = window.zhongwen.config;
         zhongwenContent.processFragment(zhongwenContent.makeFragment(e, window.zhongwen.config.tonecolors != 'no'));
     },
 
     processFragment: function(fragment) {
         var tdata = window.zhongwen;
         zhongwenContent.showPopup(fragment, tdata.prevTarget, tdata.popX, tdata.popY, false);
+        setTimeout(
+            function() {
+                zhongwenContent.hidePopup();
+            }, 3000); 
+        
         return 1;
     },
 
@@ -883,7 +889,7 @@ var zhongwenContent = {
             tdata.timer = setTimeout(
                 function() {
                     zhongwenContent.show(tdata);
-                }, 50);
+                }, 50); 
             return;
         }
 
@@ -1732,7 +1738,11 @@ document.addEventListener('selectionchange',zhongwenContent.onSelectionChange);
 if (!window.zhongwen) {
     window.zhongwen = {};
 }
+chrome.runtime.sendMessage({
+    type: 'config',
+}).then(e => {window.zhongwen.config=e});
 
+let abc=window.zhongwen;
 browser.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch(request.type) {
