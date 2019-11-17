@@ -8,7 +8,7 @@
 browser.runtime.onMessage.addListener(function(request, sender, response) {
     switch(request.type) {
         case 'search':
-            var e = zhongwenMain.search(request.text[0]);
+            var e = zhongwenMain.search(request.text);
             return Promise.resolve(e);
 
         case 'open':

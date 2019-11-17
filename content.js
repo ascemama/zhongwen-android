@@ -844,16 +844,17 @@ var zhongwenContent = {
           rp = range.startContainer;
           ro = range.startOffset;
         }*/
-        range=sel.getRangeAt(0);
+        /*range=sel.getRangeAt(0);
         rp=range.startContainer;
         ro=range.startOffset;
-
+*/      rp=anchorNode;
+        ro=sel.anchorOffset;
     
-
+/*
         if (ev.target == tdata.prevTarget) {
             if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
         }
-
+*/
         if (tdata.timer) {
             clearTimeout(tdata.timer);
             tdata.timer = null;
@@ -865,6 +866,7 @@ var zhongwenContent = {
         }
         
         // The case where the text before div is empty.
+        /*
         if(rp && rp.parentNode != ev.target) {
             rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
             ro=0;
@@ -876,6 +878,7 @@ var zhongwenContent = {
             ro = -1;
 
         }
+        */
 
         tdata.prevTarget = ev.target;
         tdata.prevRangeNode = rp;
