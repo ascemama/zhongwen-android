@@ -53,7 +53,7 @@ document.onselectionchange = function() {
   selection = document.getSelection();
 };
 */
- 
+
 
 var zhongwenContent = {
 
@@ -64,45 +64,45 @@ var zhongwenContent = {
     keysDown: [],
 
     // Hack because SelEnd can't be sent in messages
-    lastSelEnd:  [],
+    lastSelEnd: [],
     // Hack because ro was coming out always 0 for some reason.
     lastRo: 0,
-    
+
     //document.addEventListener('selectionchange',this.onSelectionChange);
 
     //Adds the listeners and stuff.
-   /* enableTab: function() {
-        if (!window.zhongwen) {
-            window.zhongwen = {};
-            document.addEventListener('mousemove', this.onMouseMove);
-            document.addEventListener('keydown', this.onKeyDown);
-            document.addEventListener('keyup', this.onKeyUp);
-            document.addEventListener('selectionchange',this.onSelectionChange);
-        }
-    },
+    /* enableTab: function() {
+         if (!window.zhongwen) {
+             window.zhongwen = {};
+             document.addEventListener('mousemove', this.onMouseMove);
+             document.addEventListener('keydown', this.onKeyDown);
+             document.addEventListener('keyup', this.onKeyUp);
+             document.addEventListener('selectionchange',this.onSelectionChange);
+         }
+     },
+ 
+     //Removes the listeners and stuff
+     disableTab: function() {
+         if (window.zhongwen) {
+             var e;
+             document.removeEventListener('mousemove', this.onMouseMove);
+             document.removeEventListener('keydown', this.onKeyDown);
+             document.removeEventListener('keyup', this.onKeyUp);
+ 
+             e = document.getElementById('zhongwen-css');
+             if (e) e.parentNode.removeChild(e);
+             e = document.getElementById('zhongwen-window');
+             if (e) e.parentNode.removeChild(e);
+ 
+             this.clearHi();
+             delete window.zhongwen;
+         }
+     },*/
 
-    //Removes the listeners and stuff
-    disableTab: function() {
-        if (window.zhongwen) {
-            var e;
-            document.removeEventListener('mousemove', this.onMouseMove);
-            document.removeEventListener('keydown', this.onKeyDown);
-            document.removeEventListener('keyup', this.onKeyUp);
-
-            e = document.getElementById('zhongwen-css');
-            if (e) e.parentNode.removeChild(e);
-            e = document.getElementById('zhongwen-window');
-            if (e) e.parentNode.removeChild(e);
-
-            this.clearHi();
-            delete window.zhongwen;
-        }
-    },*/
-
-    getContentType: function(tDoc) {
+    getContentType: function (tDoc) {
         var m = tDoc.getElementsByTagName('meta');
-        for(var i in m) {
-            if(m[i].httpEquiv == 'Content-Type') {
+        for (var i in m) {
+            if (m[i].httpEquiv == 'Content-Type') {
                 var con = m[i].content;
                 con = con.split(';');
                 return con[0];
@@ -111,7 +111,7 @@ var zhongwenContent = {
         return null;
     },
 
-    showPopup: function(fragment, elem, x, y, looseWidth) {
+    showPopup: function (fragment, elem, x, y, looseWidth) {
         var topdoc = window.document;
 
         if (!x || !y) x = y = 0;
@@ -235,7 +235,7 @@ var zhongwenContent = {
         }
     },
 
-    hidePopup: function() {
+    hidePopup: function () {
         var popup = document.getElementById('zhongwen-window');
         if (popup) {
             popup.style.display = 'none';
@@ -245,12 +245,12 @@ var zhongwenContent = {
         }
     },
 
-    isVisible: function() {
+    isVisible: function () {
         var popup = document.getElementById('zhongwen-window');
         return (popup) && (popup.style.display != 'none');
     },
 
-    clearHi: function() {
+    clearHi: function () {
         var tdata = window.zhongwen;
         if ((!tdata) || (!tdata.prevSelView)) return;
         if (tdata.prevSelView.closed) {
@@ -266,10 +266,10 @@ var zhongwenContent = {
         tdata.selText = null;
     },
 
-    onKeyDown: function(ev) {
+    onKeyDown: function (ev) {
         zhongwenContent._onKeyDown(ev)
     },
-    _onKeyDown: function(ev) {
+    _onKeyDown: function (ev) {
 
         if (ev.ctrlKey || ev.metaKey) {
             return;
@@ -397,11 +397,11 @@ var zhongwenContent = {
                     }
 
                     skritter +=
-                    '/vocab/api/add?from=Zhongwen&siteref=Zhongwen&lang=zh&word=' +
-                    encodeURIComponent(this.lastFound[0][0]) +
-                    '&trad=' + encodeURIComponent(this.lastFound[0][1]) +
-                    '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
-                    '&defn=' + encodeURIComponent(this.lastFound[0][3]);
+                        '/vocab/api/add?from=Zhongwen&siteref=Zhongwen&lang=zh&word=' +
+                        encodeURIComponent(this.lastFound[0][0]) +
+                        '&trad=' + encodeURIComponent(this.lastFound[0][1]) +
+                        '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
+                        '&defn=' + encodeURIComponent(this.lastFound[0][3]);
 
                     chrome.runtime.sendMessage({
                         type: 'open',
@@ -550,7 +550,7 @@ var zhongwenContent = {
         ev.preventDefault();
     },
 
-    getTexts: function() {
+    getTexts: function () {
         var result = '';
         for (var i = 0; i < this.lastFound.length; i++) {
             result += this.lastFound[i].slice(0, -1).join('\t');
@@ -559,11 +559,11 @@ var zhongwenContent = {
         return result;
     },
 
-    onKeyUp: function(ev) {
+    onKeyUp: function (ev) {
         if (zhongwenContent.keysDown[ev.keyCode]) zhongwenContent.keysDown[ev.keyCode] = 0;
     },
 
-    unicodeInfo: function(c) {
+    unicodeInfo: function (c) {
         var hex = '0123456789ABCDEF';
         var u = c.charCodeAt(0);
         return c + ' U' + hex[(u >>> 12) & 15] + hex[(u >>> 8) & 15] + hex[(u >>> 4) & 15] + hex[u & 15];
@@ -601,10 +601,10 @@ var zhongwenContent = {
 
         endIndex = Math.min(rangeParent.data.length, offset + maxLength);
         text += rangeParent.data.substring(offset, endIndex);
-        selEndList.push( {
+        selEndList.push({
             node: rangeParent,
             offset: endIndex
-        } );
+        });
 
         var nextNode = rangeParent;
         while (((nextNode = this.findNextTextNode(nextNode.parentNode, nextNode)) != null) && (text.length < maxLength)) {
@@ -614,7 +614,7 @@ var zhongwenContent = {
         return text;
     },
 
-    show: function(tdata, backwards) {
+    show: function (tdata, backwards) {
 
         var rp = tdata.prevRangeNode;
         var ro = tdata.prevRangeOfs + tdata.uofs;
@@ -662,21 +662,25 @@ var zhongwenContent = {
         //selection end data
         var selEndList = [];
         var text = this.getTextFromRange(rp, ro, selEndList, 30 /*maxlength*/);
-
-        lastSelEnd = selEndList;
-        lastRo = ro;
-        chrome.runtime.sendMessage({
-            "type": "search",
-            "text": text
-        },
-        zhongwenContent.processEntry);
-
+        //if same selected text as before do not show new popup
+        //needed because for some reason the selectionchanged event is fired even if it does not change
+        if (text != this.previouslySelectedText) {
+            lastSelEnd = selEndList;
+            lastRo = ro;
+            chrome.runtime.sendMessage({
+                "type": "search",
+                "text": text
+            },
+                zhongwenContent.processEntry);
+                this.previouslySelectedText=text;
+        }
+         
         return 0;
 
     },
 
-    processEntry: function(e) {
-      // Object { data: Array[2], matchLen: 2 }
+    processEntry: function (e) {
+        // Object { data: Array[2], matchLen: 2 }
 
         var tdata = window.zhongwen;
 
@@ -707,22 +711,23 @@ var zhongwenContent = {
             tdata.prevSelView = doc.defaultView;
         }
 
-            let a = window.zhongwen.config;
+        let a = window.zhongwen.config;
         zhongwenContent.processFragment(zhongwenContent.makeFragment(e, window.zhongwen.config.tonecolors != 'no'));
     },
 
-    processFragment: function(fragment) {
+    processFragment: function (fragment) {
         var tdata = window.zhongwen;
         zhongwenContent.showPopup(fragment, tdata.prevTarget, tdata.popX, tdata.popY, false);
         setTimeout(
-            function() {
+            function () {
                 zhongwenContent.hidePopup();
-            }, 3000); 
-        
+                zhongwenContent.clearHi();
+            }, 3000);
+
         return 1;
     },
 
-    debugObject: function(name, obj) {
+    debugObject: function (name, obj) {
         var debugstr = name + '=\n';
         for (var prop in obj) {
             if (obj.hasOwnProperty(prop)) {
@@ -756,12 +761,12 @@ var zhongwenContent = {
         tdata.selText = sel.toString();
     },
 
-    getFirstTextChild: function(node) {
+    getFirstTextChild: function (node) {
         var nodeIterator = document.createNodeIterator(node, NodeFilter.SHOW_TEXT, null);
         return nodeIterator.nextNode();
     },
 
-    makeDiv: function(input) {
+    makeDiv: function (input) {
         var div = document.createElement('div');
 
         div.id = '_zhongwenDiv';
@@ -789,13 +794,14 @@ var zhongwenContent = {
 
         return div;
     },
-    onSelectionChange: function(ev){
+    onSelectionChange: function (ev) {
         console.log("yoo");
-        let sel=window.getSelection();
-        let anchorNode=sel.anchorNode;
+        let sel = window.getSelection();
+
+        let anchorNode = sel.anchorNode;
         var tdata = window.zhongwen;        // per-tab data
 
-        if(anchorNode.nodeName == 'TEXTAREA' || anchorNode.nodeName == 'INPUT'
+        if (anchorNode.nodeName == 'TEXTAREA' || anchorNode.nodeName == 'INPUT'
             || anchorNode.nodeName == 'DIV' || anchorNode.nodeName == 'IFRAME' || anchorNode.nodeName == '#text') {
 
             var div = document.getElementById('_zhongwenDiv');
@@ -803,7 +809,7 @@ var zhongwenContent = {
             if (ev.altKey) {
 
                 if (!div && (anchorNode.nodeName == 'TEXTAREA' || anchorNode.nodeName == 'INPUT' ||
-                anchorNode.nodeName == 'IFRAME')) {
+                    anchorNode.nodeName == 'IFRAME')) {
 
                     div = zhongwenContent.makeDiv(ev.target);
                     document.body.appendChild(div);
@@ -827,10 +833,10 @@ var zhongwenContent = {
                 return;
             }
         }
-       // tdata.clientX = ev.clientX;
-       // tdata.clientY = ev.clientY;
-       tdata.clientX = sel.screenX;
-       tdata.clientY = sel.screenY;
+        // tdata.clientX = ev.clientX;
+        // tdata.clientY = ev.clientY;
+        tdata.clientX = sel.screenX;
+        tdata.clientY = sel.screenY;
 
 
         /*if (document.caretPositionFromPoint) {
@@ -847,24 +853,24 @@ var zhongwenContent = {
         /*range=sel.getRangeAt(0);
         rp=range.startContainer;
         ro=range.startOffset;
-*/      rp=anchorNode;
-        ro=sel.anchorOffset;
-    
-/*
-        if (ev.target == tdata.prevTarget) {
-            if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
-        }
-*/
+*/      rp = anchorNode;
+        ro = sel.anchorOffset;
+
+        /*
+                if (ev.target == tdata.prevTarget) {
+                    if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
+                }
+        */
         if (tdata.timer) {
             clearTimeout(tdata.timer);
             tdata.timer = null;
         }
 
-        if((rp.data) && ro == rp.data.length) {
+        if ((rp.data) && ro == rp.data.length) {
             rp = this.findNextTextNode(rp.parentNode, rp);
             ro = 0;
         }
-        
+
         // The case where the text before div is empty.
         /*
         if(rp && rp.parentNode != ev.target) {
@@ -890,9 +896,9 @@ var zhongwenContent = {
             tdata.popX = ev.clientX;
             tdata.popY = ev.clientY;
             tdata.timer = setTimeout(
-                function() {
+                function () {
                     zhongwenContent.show(tdata);
-                }, 50); 
+                }, 50);
             return;
         }
 
@@ -908,14 +914,14 @@ var zhongwenContent = {
     },
 
     onMouseMove:
-    function(ev) {
-       zhongwenContent._onMouseMove(ev);
-    },
+        function (ev) {
+            zhongwenContent._onMouseMove(ev);
+        },
 
-    _onMouseMove: function(ev) {
+    _onMouseMove: function (ev) {
         var tdata = window.zhongwen;        // per-tab data
 
-        if(ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'INPUT'
+        if (ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'INPUT'
             || ev.target.nodeName == 'DIV' || ev.target.nodeName == 'IFRAME') {
 
             var div = document.getElementById('_zhongwenDiv');
@@ -951,15 +957,15 @@ var zhongwenContent = {
         tdata.clientY = ev.clientY;
 
         if (document.caretPositionFromPoint) {
-          range = document.caretPositionFromPoint(ev.clientX, ev.clientY);
-          if (range == null) return;
-          rp = range.offsetNode;
-          ro = range.offset;
+            range = document.caretPositionFromPoint(ev.clientX, ev.clientY);
+            if (range == null) return;
+            rp = range.offsetNode;
+            ro = range.offset;
         } else if (document.caretRangeFromPoint) {
-          range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
-          if (range == null) return;
-          rp = range.startContainer;
-          ro = range.startOffset;
+            range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
+            if (range == null) return;
+            rp = range.startContainer;
+            ro = range.startOffset;
         }
 
         if (ev.target == tdata.prevTarget) {
@@ -971,19 +977,19 @@ var zhongwenContent = {
             tdata.timer = null;
         }
 
-        if((rp.data) && ro == rp.data.length) {
+        if ((rp.data) && ro == rp.data.length) {
             rp = this.findNextTextNode(rp.parentNode, rp);
             ro = 0;
         }
-        
+
         // The case where the text before div is empty.
-        if(rp && rp.parentNode != ev.target) {
+        if (rp && rp.parentNode != ev.target) {
             rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
-            ro=0;
+            ro = 0;
         }
 
         // Otherwise, we're off in nowhere land and we should go home.
-        else if(!(rp) || ((rp.parentNode != ev.target))){
+        else if (!(rp) || ((rp.parentNode != ev.target))) {
             rp = null;
             ro = -1;
 
@@ -999,7 +1005,7 @@ var zhongwenContent = {
             tdata.popX = ev.clientX;
             tdata.popY = ev.clientY;
             tdata.timer = setTimeout(
-                function() {
+                function () {
                     zhongwenContent.show(tdata);
                 }, 50);
             return;
@@ -1016,7 +1022,7 @@ var zhongwenContent = {
         }
     },
 
-    findNextTextNode : function(root, previous) {
+    findNextTextNode: function (root, previous) {
         if (root == null) {
             return null;
         }
@@ -1036,7 +1042,7 @@ var zhongwenContent = {
         }
     },
 
-    findPreviousTextNode : function(root, previous) {
+    findPreviousTextNode: function (root, previous) {
         if (root == null) {
             return null;
         }
@@ -1057,7 +1063,7 @@ var zhongwenContent = {
         }
     },
 
-    copyToClipboard : function(data) {
+    copyToClipboard: function (data) {
         var txt = document.createElement('textarea');
         txt.style.position = "absolute";
         txt.style.left = "-100%";
@@ -1075,14 +1081,14 @@ var zhongwenContent = {
         this.showPopup(fragment, null, -1, -1);
     },
 
-    makeFragment: function(entry, showToneColors) {
+    makeFragment: function (entry, showToneColors) {
         var e;
         var word;
         var texts = [];
         var hanziClass;
         var fragment = document.createDocumentFragment();
 
-      if (entry == null) return fragment;
+        if (entry == null) return fragment;
 
         for (var i = 0; i < entry.data.length; ++i) {
             e = entry.data[i][0].match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\/(.+)\//);
@@ -1155,7 +1161,7 @@ var zhongwenContent = {
 
             // Grammar
             if (window.zhongwen.config.grammar != 'no' &&
-                  entry.grammar && entry.grammar.index == i) {
+                entry.grammar && entry.grammar.index == i) {
                 var grammarSpan = document.createElement('span');
                 grammarSpan.textContent = 'Press "g" for grammar and usage notes.';
                 grammarSpan.className = 'grammar';
@@ -1180,20 +1186,20 @@ var zhongwenContent = {
         return fragment;
     },
 
-    tones : {
-        1 : '\u0304',
-        2 : '\u0301',
-        3 : '\u030C',
-        4 : '\u0300',
+    tones: {
+        1: '\u0304',
+        2: '\u0301',
+        3: '\u030C',
+        4: '\u0300',
         5: ''
     },
 
-    parse: function(s) {
+    parse: function (s) {
         var m = s.match(/([^AEIOU:aeiou:]*)([AEIOUaeiou:]+)([^aeiou:]*)([1-5])/);
         return m;
     },
 
-    tonify: function(vowels, tone) {
+    tonify: function (vowels, tone) {
         var text = '';
 
         if (vowels == 'ou') {
@@ -1217,7 +1223,7 @@ var zhongwenContent = {
         return text;
     },
 
-    pinyinAndZhuyin: function(syllables, showToneColors, pinyinClass) {
+    pinyinAndZhuyin: function (syllables, showToneColors, pinyinClass) {
         var text = '';
         var fragment = document.createDocumentFragment();
         var zhuyinFragment = document.createDocumentFragment();
@@ -1280,16 +1286,16 @@ var zhongwenContent = {
 
             zhuyinSpan.className = zhuyinClass + ' tone' + m[4];
             zhuyinSpan.textContent +=
-              this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
-              + this.zhuyinTones[syllable[syllable.length - 1]];
+                this.zhuyinMap[syllable.substring(0, syllable.length - 1).toLowerCase()]
+                + this.zhuyinTones[syllable[syllable.length - 1]];
             zhuyinFragment.appendChild(zhuyinSpan);
         }
         return [fragment, text, zhuyinFragment];
     },
 
-    zhuyinTones : ['?', '', '\u02CA', '\u02C7', '\u02CB', '\u30FB'],
+    zhuyinTones: ['?', '', '\u02CA', '\u02C7', '\u02CB', '\u30FB'],
 
-    zhuyinMap : {
+    zhuyinMap: {
         'a': '\u311a',
         'ai': '\u311e',
         'an': '\u3122',
@@ -1703,57 +1709,57 @@ var zhongwenContent = {
     },
 
     miniHelp:
-    '<span style="font-weight: bold;">Zhongwen Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
-    '<p>' +
-    'Keyboard shortcuts:' +
-    '<p>' +
-    '<table style="margin: 20px;" cellspacing=5 cellpadding=5>' +
-    '<tr><td><b>N&nbsp;:</b></td><td>&nbsp;Next word</td></tr>' +
-    '<tr><td><b>B&nbsp;:</b></td><td>&nbsp;Previous character</td></tr>' +
-    '<tr><td><b>M&nbsp;:</b></td><td>&nbsp;Next character</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>A&nbsp;:</b></td><td>&nbsp;Alternate popup location</td></tr>' +
-    '<tr><td><b>Y&nbsp;:</b></td><td>&nbsp;Move popup location down</td></tr>' +
-    '<tr><td><b>X&nbsp;:</b></td><td>&nbsp;Move popup location up</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>C&nbsp;:</b></td><td>&nbsp;Copy to clipboard</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>S&nbsp;:</b></td><td>&nbsp;Add word to Skritter queue</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>R&nbsp;:</b></td><td>&nbsp;Remember word by adding it to the internal word list</td></tr>' +
-    '<tr><td><b>Alt + W&nbsp;:</b></td><td>&nbsp;Show the word list</td></tr>' +
-    '<tr><td><b>Alt + Z&nbsp;:</b></td><td>&nbsp;Toggle Zhongwen on/off</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td colspan=2>Look up selected text in online resource:</td></tr>' +
-    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>Alt + 1&nbsp;:</b></td><td>&nbsp;nciku</td></tr>' +
-    // '<tr><td><b>Alt + 2&nbsp;:</b></td><td>&nbsp;YellowBridge</td></tr>' +
-    '<tr><td><b>Alt + 3&nbsp;:</b></td><td>&nbsp;Dict.cn</td></tr>' +
-    '<tr><td><b>Alt + 4&nbsp;:</b></td><td>&nbsp;iCIBA</td></tr>' +
-    '<tr><td><b>Alt + 5&nbsp;:</b></td><td>&nbsp;MDBG</td></tr>' +
-    '<tr><td><b>Alt + 6&nbsp;:</b></td><td>&nbsp;JuKuu</td></tr>' +
-    '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
-    '</table>'
+        '<span style="font-weight: bold;">Zhongwen Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
+        '<p>' +
+        'Keyboard shortcuts:' +
+        '<p>' +
+        '<table style="margin: 20px;" cellspacing=5 cellpadding=5>' +
+        '<tr><td><b>N&nbsp;:</b></td><td>&nbsp;Next word</td></tr>' +
+        '<tr><td><b>B&nbsp;:</b></td><td>&nbsp;Previous character</td></tr>' +
+        '<tr><td><b>M&nbsp;:</b></td><td>&nbsp;Next character</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td><b>A&nbsp;:</b></td><td>&nbsp;Alternate popup location</td></tr>' +
+        '<tr><td><b>Y&nbsp;:</b></td><td>&nbsp;Move popup location down</td></tr>' +
+        '<tr><td><b>X&nbsp;:</b></td><td>&nbsp;Move popup location up</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td><b>C&nbsp;:</b></td><td>&nbsp;Copy to clipboard</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td><b>S&nbsp;:</b></td><td>&nbsp;Add word to Skritter queue</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td><b>R&nbsp;:</b></td><td>&nbsp;Remember word by adding it to the internal word list</td></tr>' +
+        '<tr><td><b>Alt + W&nbsp;:</b></td><td>&nbsp;Show the word list</td></tr>' +
+        '<tr><td><b>Alt + Z&nbsp;:</b></td><td>&nbsp;Toggle Zhongwen on/off</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td colspan=2>Look up selected text in online resource:</td></tr>' +
+        '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+        '<tr><td><b>Alt + 1&nbsp;:</b></td><td>&nbsp;nciku</td></tr>' +
+        // '<tr><td><b>Alt + 2&nbsp;:</b></td><td>&nbsp;YellowBridge</td></tr>' +
+        '<tr><td><b>Alt + 3&nbsp;:</b></td><td>&nbsp;Dict.cn</td></tr>' +
+        '<tr><td><b>Alt + 4&nbsp;:</b></td><td>&nbsp;iCIBA</td></tr>' +
+        '<tr><td><b>Alt + 5&nbsp;:</b></td><td>&nbsp;MDBG</td></tr>' +
+        '<tr><td><b>Alt + 6&nbsp;:</b></td><td>&nbsp;JuKuu</td></tr>' +
+        '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
+        '</table>'
 }
 
 //Event Listeners
-document.addEventListener('selectionchange',zhongwenContent.onSelectionChange);
+document.addEventListener('selectionchange', zhongwenContent.onSelectionChange);
 if (!window.zhongwen) {
     window.zhongwen = {};
 }
 chrome.runtime.sendMessage({
     type: 'config',
-}).then(e => {window.zhongwen.config=e});
+}).then(e => { window.zhongwen.config = e });
 
-let abc=window.zhongwen;
+let abc = window.zhongwen;
 browser.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        switch(request.type) {
+    function (request, sender, sendResponse) {
+        switch (request.type) {
             case 'enable':
                 //zhongwenContent.enableTab();
                 window.zhongwen.config = request.config;
                 break;
-                
+
             case 'disable':
                 zhongwenContent.disableTab();
                 break;
