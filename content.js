@@ -46,13 +46,6 @@
 
  */
 
-/*let selection;
-
-document.onselectionchange = function() {
-  console.log('New selection made');
-  selection = document.getSelection();
-};
-*/
 
 
 var zhongwenContent = {
@@ -67,49 +60,50 @@ var zhongwenContent = {
     lastSelEnd: [],
     // Hack because ro was coming out always 0 for some reason.
     lastRo: 0,
-
-    //document.addEventListener('selectionchange',this.onSelectionChange);
-
-    //Adds the listeners and stuff.
-    /* enableTab: function() {
-         if (!window.zhongwen) {
-             window.zhongwen = {};
-             document.addEventListener('mousemove', this.onMouseMove);
-             document.addEventListener('keydown', this.onKeyDown);
-             document.addEventListener('keyup', this.onKeyUp);
-             document.addEventListener('selectionchange',this.onSelectionChange);
-         }
-     },
  
-     //Removes the listeners and stuff
-     disableTab: function() {
-         if (window.zhongwen) {
-             var e;
-             document.removeEventListener('mousemove', this.onMouseMove);
-             document.removeEventListener('keydown', this.onKeyDown);
-             document.removeEventListener('keyup', this.onKeyUp);
- 
-             e = document.getElementById('zhongwen-css');
-             if (e) e.parentNode.removeChild(e);
-             e = document.getElementById('zhongwen-window');
-             if (e) e.parentNode.removeChild(e);
- 
-             this.clearHi();
-             delete window.zhongwen;
-         }
-     },*/
-
-    getContentType: function (tDoc) {
-        var m = tDoc.getElementsByTagName('meta');
-        for (var i in m) {
-            if (m[i].httpEquiv == 'Content-Type') {
-                var con = m[i].content;
-                con = con.split(';');
-                return con[0];
-            }
+    init: function () {
+        document.addEventListener('selectionchange', zhongwenContent.onSelectionChange);
+        if (!window.zhongwen) {
+            window.zhongwen = {};
         }
-        return null;
+        chrome.runtime.sendMessage({
+            type: 'config',
+        }).then(e => { window.zhongwen.config = e });
+
+        //let abc = window.zhongwen;
+        browser.runtime.onMessage.addListener(
+            function (request, sender, sendResponse) {
+                switch (request.type) {
+                    case 'enable':
+                        //zhongwenContent.enableTab();
+                        //window.zhongwen.config = request.config;
+                        break;
+
+                    case 'disable':
+                    // zhongwenContent.disableTab();
+                    //break;
+                    case 'showPopup':
+                        if (!request.isHelp || window == window.top) {
+                            var range = document.createRange();
+                            var helpFragment = range.createContextualFragment(zhongwenContent.miniHelp);
+                            zhongwenContent.showPopup(helpFragment);
+                        }
+                        break;
+                    default:
+                }
+            })
     },
+    /* getContentType: function (tDoc) {
+         var m = tDoc.getElementsByTagName('meta');
+         for (var i in m) {
+             if (m[i].httpEquiv == 'Content-Type') {
+                 var con = m[i].content;
+                 con = con.split(';');
+                 return con[0];
+             }
+         }
+         return null;
+     },*/
 
     showPopup: function (fragment, elem, x, y, looseWidth) {
         var topdoc = window.document;
@@ -132,7 +126,7 @@ var zhongwenContent = {
             popup.setAttribute('id', 'zhongwen-window');
             topdoc.documentElement.appendChild(popup);
 
-            popup.addEventListener('dblclick',
+            popup.addEventListener('click',
                 function (ev) {
                     zhongwenContent.hidePopup();
                     ev.stopPropagation();
@@ -266,290 +260,6 @@ var zhongwenContent = {
         tdata.selText = null;
     },
 
-    onKeyDown: function (ev) {
-        zhongwenContent._onKeyDown(ev)
-    },
-    _onKeyDown: function (ev) {
-
-        if (ev.ctrlKey || ev.metaKey) {
-            return;
-        }
-
-        if (ev.altKey && (ev.keyCode == 87)) {  // Alt+W
-            chrome.runtime.sendMessage({
-                type: 'open',
-                tabType: 'wordlist',
-                url: '/wordlist.html'
-            });
-            return;
-        }
-
-        if (this.keysDown[ev.keyCode]) {
-            return;
-        }
-
-        if (!this.isVisible()) {
-            return;
-        }
-
-        var i;
-
-        switch (ev.keyCode) {
-            case 27:        // esc
-                this.hidePopup();
-                break;
-            case 65:        // a
-                this.altView = (this.altView + 1) % 3;
-                this.show(window.zhongwen);
-                break;
-            case 67:        // c
-                this.copyToClipboard(this.getTexts());
-                break;
-            case 66:        // b
-                var ofs = window.zhongwen.uofs;
-                var tdata = window.zhongwen;
-                for (i = 0; i < 10; i++) {
-                    tdata.uofs = --ofs;
-                    var ret = this.show(tdata, true);
-                    if (ret == 0) {
-                        break;
-                    } else if (ret == 2) {
-                        tdata.prevRangeNode = this.findPreviousTextNode(tdata.prevRangeNode.parentNode, tdata.prevRangeNode);
-                        tdata.prevRangeOfs = 0;
-                        ofs = tdata.prevRangeNode.data.length;
-                    }
-                }
-                break;
-
-            case 71:        // g
-                if (window.zhongwen.config.grammar != 'no' && this.isVisible() && this.lastFound.grammar) {
-                    var sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://resources.allsetlearning.com/chinese/grammar/%E4%B8%AA
-                    var allset = 'http://resources.allsetlearning.com/chinese/grammar/' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: allset
-                    });
-                }
-                break;
-
-            case 77:        // m
-                window.zhongwen.uofsNext = 1;
-            // falls through
-            case 78:        // n
-                tdata = window.zhongwen;
-                for (i = 0; i < 10; i++) {
-                    tdata.uofs += tdata.uofsNext;
-                    ret = this.show(tdata);
-                    if (ret == 0) {
-                        break;
-                    } else if (ret == 2) {
-                        tdata.prevRangeNode = this.findNextTextNode(tdata.prevRangeNode.parentNode, tdata.prevRangeNode);
-                        tdata.prevRangeOfs = 0;
-                        tdata.uofs = 0;
-                        tdata.uofsNext = 0;
-                    }
-                }
-                break;
-
-            case 82:        // r
-
-                var entries = [];
-                for (var j = 0; j < this.lastFound.length; j++) {
-                    var entry = {};
-                    entry.simplified = this.lastFound[j][0];
-                    entry.traditional = this.lastFound[j][1];
-                    entry.pinyin = this.lastFound[j][2];
-                    entry.definition = this.lastFound[j][3];
-                    entries.push(entry);
-                }
-
-                chrome.runtime.sendMessage({
-                    "type": "add",
-                    "entries": entries
-                });
-
-                var fragment = document.createDocumentFragment();
-                var p1 = document.createElement("p");
-                var p1text = document.createTextNode("Added to word list.");
-                p1.appendChild(p1text);
-                var p2 = document.createElement("p");
-                var p2text = document.createTextNode("Press Alt+W to open word list.");
-                p2.appendChild(p2text);
-                fragment.appendChild(p1);
-                fragment.appendChild(p2);
-
-                this.showPopup(fragment, null, -1, -1);
-
-                break;
-
-            case 83:        // s
-                if (this.isVisible()) {
-
-                    // http://www.skritter.com/vocab/api/add?from=Chrome&lang=zh&word=浏览&trad=瀏 覽&rdng=liú lǎn&defn=to skim over; to browse
-
-                    var skritter = 'http://legacy.skritter.com';
-                    if (window.zhongwen.config.skritterTLD == 'cn') {
-                        skritter = 'http://legacy.skritter.cn';
-                    }
-
-                    skritter +=
-                        '/vocab/api/add?from=Zhongwen&siteref=Zhongwen&lang=zh&word=' +
-                        encodeURIComponent(this.lastFound[0][0]) +
-                        '&trad=' + encodeURIComponent(this.lastFound[0][1]) +
-                        '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
-                        '&defn=' + encodeURIComponent(this.lastFound[0][3]);
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        tabType: 'skritter',
-                        url: skritter
-                    });
-                }
-                break;
-
-            case 84:     // t
-                if (this.isVisible()) {
-                    var sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=%E8%BF%9B%E8%A1%8C
-                    var tatoeba = 'http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: tatoeba
-                    });
-                }
-                break;
-
-            case 88:        // x
-                this.altView = 0;
-                window.zhongwen.popY -= 20;
-                this.show(window.zhongwen);
-                break;
-            case 89:        // y
-                this.altView = 0;
-                window.zhongwen.popY += 20;
-                this.show(window.zhongwen);
-                break;
-
-            case 49:     // 1
-                if (ev.altKey) {
-                    var sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.nciku.com/search/all/%E4%B8%AD
-                    var nciku = 'http://www.nciku.com/search/all/' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: nciku
-                    });
-                }
-                break;
-            // case 50:     // 2
-            //     if (ev.altKey) {
-            //         sel = encodeURIComponent(
-            //             window.getSelection().toString());
-            //
-            //         // http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=%E4%B8%AD
-            //         var yellow = 'http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
-            //
-            //         chrome.runtime.sendMessage({
-            //             type: 'open',
-            //             url: yellow
-            //         });
-            //     }
-            //     break;
-            case 51:     // 3
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://dict.cn/%E7%BF%BB%E8%AF%91
-                    var dictcn = 'http://dict.cn/' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: dictcn
-                    });
-                }
-                break;
-            case 52:     // 4
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.iciba.com/%E4%B8%AD%E9%A4%90
-                    var iciba = 'http://www.iciba.com/' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: iciba
-                    });
-                }
-                break;
-            case 53:     // 5
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
-                    var mdbg = 'http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: mdbg
-                    });
-                }
-                break;
-            case 54:     // 6
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://jukuu.com/show-%E8%AF%8D%E5%85%B8-0.html
-                    var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: jukuu
-                    });
-                }
-                break;
-            case 55:     // 7
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // https://www.moedict.tw/~%E4%B8%AD%E6%96%87
-                    var moedict = 'https://www.moedict.tw/~' + sel;
-
-                    chrome.runtime.sendMessage({
-                        type: 'open',
-                        url: moedict
-                    });
-                }
-                break;
-            default:
-                return;
-        }
-
-        if (ev.keyCode != 71 && ev.keyCode != 83 && ev.keyCode != 84 && ev.keyCode != 87 &&
-            (ev.keyCode < 49 || 57 < ev.keyCode)) {
-            // don't do this for opening a new Grammar, Skritter, Tatoeba or dictionary tab,
-            // or the wordlist, because onKeyUp won't be called
-            this.keysDown[ev.keyCode] = 1;
-        }
-
-        // Cancel the default action to avoid it being handled twice
-        ev.preventDefault();
-    },
-
     getTexts: function () {
         var result = '';
         for (var i = 0; i < this.lastFound.length; i++) {
@@ -558,11 +268,11 @@ var zhongwenContent = {
         }
         return result;
     },
-
-    onKeyUp: function (ev) {
-        if (zhongwenContent.keysDown[ev.keyCode]) zhongwenContent.keysDown[ev.keyCode] = 0;
-    },
-
+    /*
+        onKeyUp: function (ev) {
+            if (zhongwenContent.keysDown[ev.keyCode]) zhongwenContent.keysDown[ev.keyCode] = 0;
+        },
+    */
     unicodeInfo: function (c) {
         var hex = '0123456789ABCDEF';
         var u = c.charCodeAt(0);
@@ -672,25 +382,24 @@ var zhongwenContent = {
                 "text": text
             },
                 zhongwenContent.processEntry);
-                this.previouslySelectedText=text;
+            this.previouslySelectedText = text;
         }
-         
+
         return 0;
 
     },
 
     processEntry: function (e) {
-        // Object { data: Array[2], matchLen: 2 }
-
+         
         var tdata = window.zhongwen;
-
         var ro = lastRo;
-
         var selEndList = lastSelEnd;
 
         if (!e) {
             zhongwenContent.hidePopup();
             zhongwenContent.clearHi();
+
+            zhongwenContent.clearTimeoutTodeletePopup();
             return -1;
         }
 
@@ -718,11 +427,12 @@ var zhongwenContent = {
     processFragment: function (fragment) {
         var tdata = window.zhongwen;
         zhongwenContent.showPopup(fragment, tdata.prevTarget, tdata.popX, tdata.popY, false);
-        setTimeout(
+
+        tdata.timerToDeletePopup = setTimeout(
             function () {
                 zhongwenContent.hidePopup();
                 zhongwenContent.clearHi();
-            }, 3000);
+            }, window.zhongwen.config.popupTime * 1000);
 
         return 1;
     },
@@ -737,7 +447,16 @@ var zhongwenContent = {
         console.log(debugstr);
     },
 
+    clearTimeoutTodeletePopup: function () {
+        var tdata = window.zhongwen;
+        if (tdata.timerToDeletePopup) {
+            clearTimeout(tdata.timerToDeletePopup);
+            tdata.timerToDeletePopup = null;
+        }
+    },
+
     highlightMatch: function (doc, rp, ro, matchLen, selEndList, tdata) {
+        zhongwenContent.clearTimeoutTodeletePopup();
         if (selEndList == undefined || selEndList.length === 0) return;
 
         var selEnd;
@@ -775,7 +494,6 @@ var zhongwenContent = {
         if (input.value) {
             text = input.value;
         } else if (input.nodeName == 'IFRAME') {
-            // gmail
             text = $(input.contentDocument).find('body').html();
         } else {
             text = '';
@@ -795,7 +513,6 @@ var zhongwenContent = {
         return div;
     },
     onSelectionChange: function (ev) {
-        console.log("yoo");
         let sel = window.getSelection();
 
         let anchorNode = sel.anchorNode;
@@ -815,17 +532,13 @@ var zhongwenContent = {
                     document.body.appendChild(div);
                     div.scrollTop = ev.target.scrollTop;
                     div.scrollLeft = ev.target.scrollLeft;
-
                 }
 
             } else {
-
                 if (div) {
                     document.body.removeChild(div);
                 }
-
             }
-
         }
 
         if (tdata.clientX && tdata.clientY) {
@@ -833,46 +546,30 @@ var zhongwenContent = {
                 return;
             }
         }
-        // tdata.clientX = ev.clientX;
-        // tdata.clientY = ev.clientY;
-        tdata.clientX = sel.screenX;
-        tdata.clientY = sel.screenY;
 
-
-        /*if (document.caretPositionFromPoint) {
-          range = document.caretPositionFromPoint(ev.clientX, ev.clientY);
-          if (range == null) return;
-          rp = range.offsetNode;
-          ro = range.offset;
-        } else if (document.caretRangeFromPoint) {
-          range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
-          if (range == null) return;
-          rp = range.startContainer;
-          ro = range.startOffset;
-        }*/
-        /*range=sel.getRangeAt(0);
-        rp=range.startContainer;
-        ro=range.startOffset;
-*/      rp = anchorNode;
+        rp = anchorNode;
         ro = sel.anchorOffset;
 
-        /*
-                if (ev.target == tdata.prevTarget) {
-                    if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
-                }
-        */
-        if (tdata.timer) {
-            clearTimeout(tdata.timer);
-            tdata.timer = null;
+        /** */
+        if (ev.target == tdata.prevTarget) {
+            if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
+        }
+        /*/
+
+        //clear all timers
+        if (tdata.timerToShowPopup) {
+            clearTimeout(tdata.timerToShowPopup);
+            tdata.timerToShowPopup = null;
         }
 
+/*
         if ((rp.data) && ro == rp.data.length) {
             rp = this.findNextTextNode(rp.parentNode, rp);
             ro = 0;
         }
 
         // The case where the text before div is empty.
-        /*
+        
         if(rp && rp.parentNode != ev.target) {
             rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
             ro=0;
@@ -884,7 +581,7 @@ var zhongwenContent = {
             ro = -1;
 
         }
-        */
+     */
 
         tdata.prevTarget = ev.target;
         tdata.prevRangeNode = rp;
@@ -895,116 +592,7 @@ var zhongwenContent = {
         if ((rp) && (rp.data) && (ro < rp.data.length)) {
             tdata.popX = ev.clientX;
             tdata.popY = ev.clientY;
-            tdata.timer = setTimeout(
-                function () {
-                    zhongwenContent.show(tdata);
-                }, 50);
-            return;
-        }
-
-        // Don't close just because we moved from a valid popup slightly over
-        // to a place with nothing.
-        var dx = tdata.popX - ev.clientX;
-        var dy = tdata.popY - ev.clientY;
-        var distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance > 4) {
-            this.clearHi();
-            this.hidePopup();
-        }
-    },
-
-    onMouseMove:
-        function (ev) {
-            zhongwenContent._onMouseMove(ev);
-        },
-
-    _onMouseMove: function (ev) {
-        var tdata = window.zhongwen;        // per-tab data
-
-        if (ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'INPUT'
-            || ev.target.nodeName == 'DIV' || ev.target.nodeName == 'IFRAME') {
-
-            var div = document.getElementById('_zhongwenDiv');
-
-            if (ev.altKey) {
-
-                if (!div && (ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'INPUT' ||
-                    ev.target.nodeName == 'IFRAME')) {
-
-                    div = zhongwenContent.makeDiv(ev.target);
-                    document.body.appendChild(div);
-                    div.scrollTop = ev.target.scrollTop;
-                    div.scrollLeft = ev.target.scrollLeft;
-
-                }
-
-            } else {
-
-                if (div) {
-                    document.body.removeChild(div);
-                }
-
-            }
-
-        }
-
-        if (tdata.clientX && tdata.clientY) {
-            if (ev.clientX == tdata.clientX && ev.clientY == tdata.clientY) {
-                return;
-            }
-        }
-        tdata.clientX = ev.clientX;
-        tdata.clientY = ev.clientY;
-
-        if (document.caretPositionFromPoint) {
-            range = document.caretPositionFromPoint(ev.clientX, ev.clientY);
-            if (range == null) return;
-            rp = range.offsetNode;
-            ro = range.offset;
-        } else if (document.caretRangeFromPoint) {
-            range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
-            if (range == null) return;
-            rp = range.startContainer;
-            ro = range.startOffset;
-        }
-
-        if (ev.target == tdata.prevTarget) {
-            if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
-        }
-
-        if (tdata.timer) {
-            clearTimeout(tdata.timer);
-            tdata.timer = null;
-        }
-
-        if ((rp.data) && ro == rp.data.length) {
-            rp = this.findNextTextNode(rp.parentNode, rp);
-            ro = 0;
-        }
-
-        // The case where the text before div is empty.
-        if (rp && rp.parentNode != ev.target) {
-            rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
-            ro = 0;
-        }
-
-        // Otherwise, we're off in nowhere land and we should go home.
-        else if (!(rp) || ((rp.parentNode != ev.target))) {
-            rp = null;
-            ro = -1;
-
-        }
-
-        tdata.prevTarget = ev.target;
-        tdata.prevRangeNode = rp;
-        tdata.prevRangeOfs = ro;
-        tdata.uofs = 0;
-        this.uofsNext = 1;
-
-        if ((rp) && (rp.data) && (ro < rp.data.length)) {
-            tdata.popX = ev.clientX;
-            tdata.popY = ev.clientY;
-            tdata.timer = setTimeout(
+            tdata.timerToShowPopup = setTimeout(
                 function () {
                     zhongwenContent.show(tdata);
                 }, 50);
@@ -1063,24 +651,6 @@ var zhongwenContent = {
         }
     },
 
-    copyToClipboard: function (data) {
-        var txt = document.createElement('textarea');
-        txt.style.position = "absolute";
-        txt.style.left = "-100%";
-        txt.value = data;
-        document.body.appendChild(txt);
-        txt.select();
-        document.execCommand('copy');
-        document.body.removeChild(txt);
-
-        var fragment = document.createDocumentFragment();
-        var p = document.createElement("p");
-        var ptext = document.createTextNode("Copied to clipboard.");
-        p.appendChild(ptext);
-        fragment.appendChild(p);
-        this.showPopup(fragment, null, -1, -1);
-    },
-
     makeFragment: function (entry, showToneColors) {
         var e;
         var word;
@@ -1136,6 +706,14 @@ var zhongwenContent = {
             }
             var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
             fragment.appendChild(p[0]);
+
+            //add delete symbol to the right of the (first row) pinyin
+            if (i == 0) {
+                var deleteSymbol = document.createElement("span");
+                deleteSymbol.textContent = "\u2718";
+                deleteSymbol.className = "deleteSymbol"
+                fragment.appendChild(deleteSymbol);
+            }
 
             // Zhuyin
 
@@ -1742,34 +1320,5 @@ var zhongwenContent = {
         '</table>'
 }
 
-//Event Listeners
-document.addEventListener('selectionchange', zhongwenContent.onSelectionChange);
-if (!window.zhongwen) {
-    window.zhongwen = {};
-}
-chrome.runtime.sendMessage({
-    type: 'config',
-}).then(e => { window.zhongwen.config = e });
 
-let abc = window.zhongwen;
-browser.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        switch (request.type) {
-            case 'enable':
-                //zhongwenContent.enableTab();
-                window.zhongwen.config = request.config;
-                break;
-
-            case 'disable':
-                zhongwenContent.disableTab();
-                break;
-            case 'showPopup':
-                if (!request.isHelp || window == window.top) {
-                    var range = document.createRange();
-                    var helpFragment = range.createContextualFragment(zhongwenContent.miniHelp);
-                    zhongwenContent.showPopup(helpFragment);
-                }
-                break;
-            default:
-        }
-    });
+zhongwenContent.init();

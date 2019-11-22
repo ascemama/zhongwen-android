@@ -68,7 +68,8 @@ var zhongwenMain = {
           'fontSize': 'small',
           'skritterTLD': 'com',
           'zhuyin': 'no',
-          'grammar': 'yes'
+          'grammar': 'no',
+          'popupTime':3
         }
       })
       let dictionaryPromise = zhongwenMain.loadDictionary()
@@ -103,7 +104,8 @@ var zhongwenMain = {
                         'fontSize': "small",
                         'skritterTLD': "com",
                         'zhuyin': "no",
-                        'grammar': "yes"
+                        'grammar': "no",
+                        'popupTime':3
                     }
                 });
                 optionsPromise.then((storage) => {
@@ -128,7 +130,8 @@ var zhongwenMain = {
         'fontSize': 'small',
         'skritterTLD': 'com',
         'zhuyin': 'no',
-        'grammar': 'yes'
+        'grammar': 'yes',
+        'popupTime':3
       }
     })
     let dictionaryPromise = zhongwenMain.loadDictionary()

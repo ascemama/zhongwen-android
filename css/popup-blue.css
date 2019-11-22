@@ -44,6 +44,9 @@
   color: #C0FFC0;
 }
 
+#zhongwen-window .deleteSymbol {
+  float: right;
+}
 #zhongwen-window .w-def {
   font-size: 16px;
 }

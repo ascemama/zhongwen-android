@@ -27,29 +27,37 @@ function loadVals() {
     } else {
         document.optform.fontSize[0].selected = true;
     }
-
+/* For now no skritter
     if (localStorage['skritterTLD'] === 'cn') {
         document.optform.skritterTLD[1].selected = true;
     } else {
         document.optform.skritterTLD[0].selected = true;
     }
-
+*/
     if (localStorage['zhuyin'] === 'yes') {
         document.optform.zhuyin[1].selected = true;
     } else {
         document.optform.zhuyin[0].selected = true;
     }
 
+    /* For now no grammar
     if (localStorage['grammar'] === 'no') {
         document.optform.grammar[1].selected = true;
     } else {
         document.optform.grammar[0].selected = true;
     }
+    */
 
     if (localStorage['simpTrad'] === 'auto') {
         document.optform.simpTrad[1].selected = true;
     } else {
         document.optform.simpTrad[0].selected = true;
+    }
+    if('popupTime' in localStorage){
+        document.optform.popupTime.value=localStorage['popupTime'];
+    }
+    else {
+        document.optform.popupTime[2].selected=true;
     }
 }
 
@@ -58,25 +66,31 @@ function storeVals() {
     const backgroundPage = chrome.extension.getBackgroundPage();
 
     localStorage['popupcolor'] = document.optform.popupcolor.value;
-    backgroundPage.zhongwenOptions.css = localStorage['popupcolor'];
+    backgroundPage.zhongwenMain.options.popupcolor = localStorage['popupcolor'];
 
     localStorage['tonecolors'] = document.optform.tonecolors.value;
-    backgroundPage.zhongwenOptions.tonecolors = localStorage['tonecolors'];
+    backgroundPage.zhongwenMain.options.tonecolors = localStorage['tonecolors'];
 
     localStorage['fontSize'] = document.optform.fontSize.value;
-    backgroundPage.zhongwenOptions.fontSize = localStorage['fontSize'];
+    backgroundPage.zhongwenMain.options.fontSize = localStorage['fontSize'];
 
+    /*
     localStorage['skritterTLD'] = document.optform.skritterTLD.value;
-    backgroundPage.zhongwenOptions.skritterTLD = localStorage['skritterTLD'];
-
+    backgroundPage.zhongwenMain.options.skritterTLD = localStorage['skritterTLD'];
+    */
     localStorage['zhuyin'] = document.optform.zhuyin.value;
-    backgroundPage.zhongwenOptions.zhuyin = localStorage['zhuyin'];
+    backgroundPage.zhongwenMain.options.zhuyin = localStorage['zhuyin'];
 
+    /*
     localStorage['grammar'] = document.optform.grammar.value;
-    backgroundPage.zhongwenOptions.grammar = localStorage['grammar'];
-
+    backgroundPage.zhongwenMain.options.grammar = localStorage['grammar'];
+    */
+   
     localStorage['simpTrad'] = document.optform.simpTrad.value;
-    backgroundPage.zhongwenOptions.simpTrad = localStorage['simpTrad'];
+    backgroundPage.zhongwenMain.options.simpTrad = localStorage['simpTrad'];
+
+    localStorage['popupTime'] = document.optform.popupTime.value;
+    backgroundPage.zhongwenMain.options.popupTime = localStorage['popupTime'];
 }
 
 $(function () {
