@@ -57,7 +57,7 @@ function loadVals() {
         document.optform.popupTime.value=localStorage['popupTime'];
     }
     else {
-        document.optform.popupTime[2].selected=true;
+        document.optform.popupTime[3].selected=true;
     }
 }
 
@@ -85,7 +85,7 @@ function storeVals() {
     localStorage['grammar'] = document.optform.grammar.value;
     backgroundPage.zhongwenMain.options.grammar = localStorage['grammar'];
     */
-   
+
     localStorage['simpTrad'] = document.optform.simpTrad.value;
     backgroundPage.zhongwenMain.options.simpTrad = localStorage['simpTrad'];
 
