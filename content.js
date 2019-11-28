@@ -69,19 +69,10 @@ var zhongwenContent = {
         chrome.runtime.sendMessage({
             type: 'config',
         }).then(e => { window.zhongwen.config = e });
-
-        //let abc = window.zhongwen;
+ 
         browser.runtime.onMessage.addListener(
             function (request, sender, sendResponse) {
                 switch (request.type) {
-                    case 'enable':
-                        //zhongwenContent.enableTab();
-                        //window.zhongwen.config = request.config;
-                        break;
-
-                    case 'disable':
-                    // zhongwenContent.disableTab();
-                    //break;
                     case 'showPopup':
                         if (!request.isHelp || window == window.top) {
                             var range = document.createRange();
@@ -93,17 +84,6 @@ var zhongwenContent = {
                 }
             })
     },
-    /* getContentType: function (tDoc) {
-         var m = tDoc.getElementsByTagName('meta');
-         for (var i in m) {
-             if (m[i].httpEquiv == 'Content-Type') {
-                 var con = m[i].content;
-                 con = con.split(';');
-                 return con[0];
-             }
-         }
-         return null;
-     },*/
 
     showPopup: function (fragment, elem, x, y, looseWidth) {
         var topdoc = window.document;
@@ -268,11 +248,7 @@ var zhongwenContent = {
         }
         return result;
     },
-    /*
-        onKeyUp: function (ev) {
-            if (zhongwenContent.keysDown[ev.keyCode]) zhongwenContent.keysDown[ev.keyCode] = 0;
-        },
-    */
+     
     unicodeInfo: function (c) {
         var hex = '0123456789ABCDEF';
         var u = c.charCodeAt(0);
@@ -517,6 +493,10 @@ var zhongwenContent = {
 
         let anchorNode = sel.anchorNode;
         var tdata = window.zhongwen;        // per-tab data
+        
+        if (!anchorNode){
+            return;
+        }
 
         if (anchorNode.nodeName == 'TEXTAREA' || anchorNode.nodeName == 'INPUT'
             || anchorNode.nodeName == 'DIV' || anchorNode.nodeName == 'IFRAME' || anchorNode.nodeName == '#text') {
@@ -550,38 +530,10 @@ var zhongwenContent = {
         rp = anchorNode;
         ro = sel.anchorOffset;
 
-        /** */
+        
         if (ev.target == tdata.prevTarget) {
             if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
         }
-        /*/
-
-        //clear all timers
-        if (tdata.timerToShowPopup) {
-            clearTimeout(tdata.timerToShowPopup);
-            tdata.timerToShowPopup = null;
-        }
-
-/*
-        if ((rp.data) && ro == rp.data.length) {
-            rp = this.findNextTextNode(rp.parentNode, rp);
-            ro = 0;
-        }
-
-        // The case where the text before div is empty.
-        
-        if(rp && rp.parentNode != ev.target) {
-            rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
-            ro=0;
-        }
-
-        // Otherwise, we're off in nowhere land and we should go home.
-        else if(!(rp) || ((rp.parentNode != ev.target))){
-            rp = null;
-            ro = -1;
-
-        }
-     */
 
         tdata.prevTarget = ev.target;
         tdata.prevRangeNode = rp;

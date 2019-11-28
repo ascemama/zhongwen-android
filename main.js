@@ -63,18 +63,16 @@ var zhongwenMain = {
     init: function(){
       let optionsPromise = browser.storage.sync.get({
         options: {
-          'popupcolor': 'yellow',
+          'popupcolor': 'lightblue',
           'tonecolors': 'yes',
           'fontSize': 'small',
           'skritterTLD': 'com',
           'zhuyin': 'no',
           'grammar': 'no',
-          'popupTime':3
+          'popupTime':4
         }
       })
       let dictionaryPromise = zhongwenMain.loadDictionary()
-     // let enabled = 1
-      //let enablePromise = browser.storage.local.set({enabled})
   
       Promise.all([optionsPromise, dictionaryPromise]).then(
         ([storage, dictionary]) => {
@@ -84,140 +82,7 @@ var zhongwenMain = {
         })
 
     },
-
-    // The callback for onActivated.
-    // Just sends a message to the tab to enable itself if it hasn't already.
-    onTabActivated: function (activeInfo) {
-        zhongwenMain._checkEnableTab(activeInfo.tabId)
-    },
-    onTabUpdated: function (tabId, changeInfo, tabInfo) {
-        zhongwenMain._checkEnableTab(tabId)
-    },
-    _checkEnableTab: function (tabId) {
-        let enabledPromise = browser.storage.local.get({enabled: 0});
-        enabledPromise.then((storage) => {
-            if (storage.enabled === 1) {
-                let optionsPromise = browser.storage.sync.get({
-                    options: {
-                        'popupcolor': "yellow",
-                        'tonecolors': "yes",
-                        'fontSize': "small",
-                        'skritterTLD': "com",
-                        'zhuyin': "no",
-                        'grammar': "no",
-                        'popupTime':3
-                    }
-                });
-                optionsPromise.then((storage) => {
-                    browser.tabs.sendMessage(tabId, {
-                        type: "enable",
-                        config: storage.options
-                    }).catch(reportError);
-                });
-            }
-        });
-    },
-  sendConfigToContent: function(){
-
-  },
-
-  enable: function(tab) {
-   // enable: function(){
-    let optionsPromise = browser.storage.sync.get({
-      options: {
-        'popupcolor': 'yellow',
-        'tonecolors': 'yes',
-        'fontSize': 'small',
-        'skritterTLD': 'com',
-        'zhuyin': 'no',
-        'grammar': 'yes',
-        'popupTime':3
-      }
-    })
-    let dictionaryPromise = zhongwenMain.loadDictionary()
-    let enabled = 1
-    let enablePromise = browser.storage.local.set({enabled})
-
-    Promise.all([optionsPromise, dictionaryPromise, enablePromise]).then(
-      ([storage, dictionary, enabled]) => {
-
-        this.dict = dictionary
-
-        // Send message to current tab to add listeners and create stuff
-        if (tab !== undefined) {
-          browser.tabs.sendMessage(tab.id, {
-            type: 'enable',
-            config: storage.options
-          }).catch(reportError)
-
-          browser.tabs.sendMessage(tab.id, {
-            type: 'showPopup',
-            isHelp: true
-          }).catch(reportError)
-        }
-        /*
-        browser.browserAction.setBadgeBackgroundColor({
-          'color': [255, 0, 0, 255]
-        })
-
-        browser.browserAction.setBadgeText({
-          'text': 'On'
-        })
-        
-        browser.contextMenus.create({
-          title: 'Open word list',
-          id: 'wordlist-page',
-          onclick: zhongwenMain.wordlistTab,
-          contexts: ['page']
-        })
-        */
-      })
-  },
-
-    disable: function(tab) {
-      let enabled = 0;
-      let enablePromise = browser.storage.local.set({enabled});
-
-      Promise.all([enablePromise]).then(([storage]) => {
-        // Delete dictionary object after we implement it
-        delete this.dict;
-
-            /*   browser.browserAction.setBadgeBackgroundColor({
-          "color": [0, 0, 0, 0]
-        });
-        browser.browserAction.setBadgeText({
-          "text": ""
-        });
-          */
-        // Send a disable message to all browsers.
-        browser.windows.getAll({
-          "populate": true
-        }).then((windowInfoArray) => {
-          for (let windowInfo of windowInfoArray) {
-            for (let tabInfo of windowInfo.tabs) {
-              browser.tabs.sendMessage(tabInfo.id, {
-                type: "disable"
-              }).catch(ignoreError);
-              // Some tabs may not have a listener as they were never activated
-            }
-          }
-        });
-      });
-
-      browser.contextMenus.remove("wordlist-page");
-    },
-
-  enableToggle: function(tab) {
-    let enabledPromise = browser.storage.local.get({enabled: 0});
-    enabledPromise.then((storage) => {
-      if (storage.enabled == 1) {
-        zhongwenMain.disable(tab);
-      } else {
-        zhongwenMain.enable(tab);
-      }
-    });
-  },
-
+ 
     search: function(text) {
 
         var entry = this.dict.wordSearch(text);
@@ -235,6 +100,7 @@ var zhongwenMain = {
 
     },
 
+    //not use for now, maybe later
   wordlistTab: function() {
     var url = browser.extension.getURL("/wordlist.html");
     var tabID = zhongwenMain.tabIDs['wordlist'];
