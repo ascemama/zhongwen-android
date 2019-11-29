@@ -30,7 +30,7 @@
   "web_accessible_resources": [ "css/*", "js/*", "images/*" ],
   "applications": {
     "gecko": {
-      "id": "{b65c7bc6-846b-4f65-b6ed-099d7e042309}",
+      "id": "{b65c7bc6-846b-4f65-b6ed-099d7e042301}",
       "strict_min_version": "67.0"
     }
   }
