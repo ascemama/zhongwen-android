@@ -8,9 +8,9 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
 *Note: currently chrome does not support extension on android devices.*
  
 
-<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/android/images/Screenshot.PNG" align="left" width="200" ></a>
+<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/android/images/Screenshot.PNG"  width="300" ></a>
 
-
+<br/><br/>
 
 **Github:**
 https://github.com/ascemama/zhongwen-android
