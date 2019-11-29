@@ -6,6 +6,11 @@ by simply clicking on them.
 It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard Lausen (https://github.com/leezu/zhongwen) which itself is a port of the Chrome extension of Christian Schiller (https://github.com/cschiller/zhongwen).
 
 *Note: currently chrome does not support extension on android devices.*
+ 
+
+<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/master/images/Screenshot.PNG"  width="250" ></a>
+
+<br/><br/>
 
 **Github:**
 https://github.com/ascemama/zhongwen-android
@@ -28,8 +33,8 @@ On your android device, open firefox go to https://addons.mozilla.org/en-US/fire
 
 
 ## How Does It Work?
-Once Zhongwen is installed on your android device you can directly use it if you browse to a page containing chinese character and touch one of those.
-If you want to turn it off again, click on the top right of the firefox window and goto the addons configuration, there you can turn on/off each addon.
+Once Zhongwen is installed on your android device you can directly use it if you browse to a page containing chinese character and press on one of those. The popup will show up and be displayed for 4 seconds (configurable). You can also make the popup disappear by clicking on it.
+If you want to turn the extension off, click on the top right of the firefox window and goto the addons configuration, there you can turn on/off each addon.
 
 
 ## What Information Does It Show?
