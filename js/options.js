@@ -49,9 +49,9 @@ function loadVals() {
     */
 
     if (localStorage['simpTrad'] === 'auto') {
-        document.optform.simpTrad[1].selected = true;
-    } else {
         document.optform.simpTrad[0].selected = true;
+    } else {
+        document.optform.simpTrad[1].selected = true;
     }
     if('popupTime' in localStorage){
         document.optform.popupTime.value=localStorage['popupTime'];

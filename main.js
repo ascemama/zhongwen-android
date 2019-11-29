@@ -4,6 +4,8 @@
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
         Modified work Copyright (C) 2017 Leonard Lausen
         https://github.com/leezu/zhongwen
+        Modified work Copyright (C) 2019 Antoine Scemama
+        https://github.com/ascemama/zhongwen
 
         ---
 
@@ -69,7 +71,8 @@ var zhongwenMain = {
           'skritterTLD': 'com',
           'zhuyin': 'no',
           'grammar': 'no',
-          'popupTime':4
+          'popupTime':4,
+          'simpTrad':'auto'
         }
       })
       let dictionaryPromise = zhongwenMain.loadDictionary()

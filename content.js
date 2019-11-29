@@ -4,6 +4,8 @@
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
         Modified work Copyright (C) 2017 Leonard Lausen
         https://github.com/leezu/zhongwen
+        Modified work Copyright (C) 2019 Antoine Scemama
+        https://github.com/ascemama/zhongwen
 
         ---
 
@@ -627,7 +629,8 @@ var zhongwenContent = {
                     hanziClass += '-small';
                 }
                 var hanziSpan = document.createElement('span');
-                hanziSpan.textContent = e[2];
+                //hanziSpan.textContent = e[2];
+                hanziSpan.textContent = word;
                 hanziSpan.className = hanziClass;
                 fragment.appendChild(hanziSpan);
 
