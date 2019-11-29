@@ -42,6 +42,9 @@
 #zhongwen-window .w-pinyin {
   font-size: 18px;
 }
+#zhongwen-window .deleteSymbol {
+  float: right;
+}
 
 #zhongwen-window .w-def {
   font-size: 16px;

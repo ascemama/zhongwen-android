@@ -1,49 +1,37 @@
 {
-  "manifest_version": 2,
-  "name": "Zhongwen: Chinese-English Dictionary",
-  "short_name": "Zhongwen",
-  "version": "5.0.0",
-  "author": "Christian Schiller",
-  "homepage_url": "https://github.com/cschiller/zhongwen",
-  "description": "Great tool for learning Chinese. Includes links to Chinese Grammar Wiki. Supports adding words to Skritter.",
-  "icons": {
-    "16": "images/zhongwen16.png",
-    "48": "images/zhongwen48.png",
-    "128": "images/zhongwen.png"
-  },
-  "browser_action": {
-    "default_icon": "images/zhongwen48.png",
-    "default_title": "Zhongwen Chinese Popup Dictionary"
-  },
-  "background": {
-    "scripts": [
-      "dict.js",
-      "background.js"
-    ]
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "js/jquery-3.3.1.min.js",
-        "content.js"
-      ],
-      "all_frames": true
+   "author": "Christian Schiller, Leonard Lausen, Antoine Scemama",
+   "background": {
+      "scripts": [ "dict.js", "main.js", "background.js" ]
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "match_about_blank": true,
+      "js": [ "content.js" ],
+      "matches": [ "<all_urls>" ]
+   } ],
+   "description": "Mouse over chinese dictionary for android. Anroid fork of the Leonard Lausen Firefox extension which is a itself a fork of Christian  Schiller Chrome extension",
+   "icons": {
+      "128": "images/zhongwen.png",
+      "16": "images/zhongwen16.png",
+      "48": "images/zhongwen48.png"
+   },
+  "homepage_url": "https://github.com/ascemama/zhongwen",
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9kqvX6bQ05nYOOB67oitnTW6arQZbq/nLebcs8f2jwXM7cvZrkNaMtZroysYtDPFIES7yP4/SAsVP4CGKP7z/2o8/BBkqe+8+4Okk5bo23ovpGVSqGlpE63Q58Zkpl6j/GcVpHAlE5thNH7QmBjcAH5ESdt/o2iJaYDbImwthDwIDAQAB",
+   "manifest_version": 2,
+   "name": "Zhongwen: Chinese-English Dictionary",
+   "options_ui": {
+     "page": "options.html",
+     "browser_style": true,
+     "chrome_style": true
+   },
+  "permissions": [ "*://*/*", "storage"],
+   "short_name": "Zhongwen",
+  "version": "1.0",
+  "web_accessible_resources": [ "css/*", "js/*", "images/*" ],
+  "applications": {
+    "gecko": {
+      "id": "{b65c7bc6-846b-4f65-b6ed-099d7e042309}",
+      "strict_min_version": "67.0"
     }
-  ],
-  "options_ui": {
-    "page": "options.html",
-    "open_in_tab": true
-  },
-  "permissions": [
-    "http://*/*",
-    "contextMenus"
-  ],
-  "web_accessible_resources": [
-    "css/*",
-    "js/*",
-    "images/*"
-  ]
+  }
 }
