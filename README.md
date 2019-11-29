@@ -7,7 +7,7 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
 
 *Note: currently chrome does not support extension on android devices.*
 
-![Drag Racing](images/Screenshot.PNG)
+![Screenshot](images/Screenshot.PNG | width=100}
 
 
 **Github:**
