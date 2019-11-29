@@ -6,9 +6,10 @@ by simply clicking on them.
 It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard Lausen (https://github.com/leezu/zhongwen) which itself is a port of the Chrome extension of Christian Schiller (https://github.com/cschiller/zhongwen).
 
 *Note: currently chrome does not support extension on android devices.*
+ 
 
-![Screenshot](images/Screenshot.PNG | width=100}
-<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/android/images/Screenshot.PNG" align="left" width="48" ></a>
+<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/android/images/Screenshot.PNG" align="left" width="200" ></a>
+
 
 
 **Github:**
