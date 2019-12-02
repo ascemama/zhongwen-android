@@ -12,18 +12,16 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
 
 <br/><br/>
 
-**Github:**
-https://github.com/ascemama/zhongwen-android
 
 ## Highlights
 - Supports both traditional and simplified characters.
 - Includes a recent version of the widely used CEDICT Chinese English
   dictionary.
-- Displays  simplified and/or traditional characters,
 - As a learning aid it uses different colors for displaying the Pinyin
   syllables, depending on the tone of the Chinese character.
 - Highlights the characters whose translation is displayed in the pop-up
   window.
+- Some Zhongwen extension laptop features are currently not supported: interfacte to Skritter/grammar/vocabulary list.
  
 
 
@@ -91,4 +89,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ---
 
-*Copyright (C) 2019 Antoine Scemama*
+*Copyright (C) 2019 AScemama*
