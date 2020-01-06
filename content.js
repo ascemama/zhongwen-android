@@ -62,11 +62,13 @@ var zhongwenContent = {
     lastSelEnd: [],
     // Hack because ro was coming out always 0 for some reason.
     lastRo: 0,
+
  
     init: function () {
         document.addEventListener('selectionchange', zhongwenContent.onSelectionChange);
         if (!window.zhongwen) {
             window.zhongwen = {};
+            window.zhongwen.isPopupCurrentlyDisplayed= false;
         }
         chrome.runtime.sendMessage({
             type: 'config',
@@ -89,6 +91,7 @@ var zhongwenContent = {
 
     showPopup: function (fragment, elem, x, y, looseWidth) {
         var topdoc = window.document;
+        window.zhongwen.isPopupCurrentlyDisplayed =true;
 
         if (!x || !y) x = y = 0;
 
@@ -213,6 +216,7 @@ var zhongwenContent = {
 
     hidePopup: function () {
         var popup = document.getElementById('zhongwen-window');
+        window.zhongwen.isPopupCurrentlyDisplayed=false;
         if (popup) {
             popup.style.display = 'none';
             while (popup.hasChildNodes()) {
@@ -352,7 +356,7 @@ var zhongwenContent = {
         var text = this.getTextFromRange(rp, ro, selEndList, 30 /*maxlength*/);
         //if same selected text as before do not show new popup
         //needed because for some reason the selectionchanged event is fired even if it does not change
-        if (text != this.previouslySelectedText) {
+        if (text != this.previouslySelectedText || tdata.isPopupCurrentlyDisplayed === false) {
             lastSelEnd = selEndList;
             lastRo = ro;
             chrome.runtime.sendMessage({
@@ -397,8 +401,6 @@ var zhongwenContent = {
             zhongwenContent.highlightMatch(doc, rp, ro, e.matchLen, selEndList, tdata);
             tdata.prevSelView = doc.defaultView;
         }
-
-        let a = window.zhongwen.config;
         zhongwenContent.processFragment(zhongwenContent.makeFragment(e, window.zhongwen.config.tonecolors != 'no'));
     },
 
@@ -533,10 +535,12 @@ var zhongwenContent = {
         ro = sel.anchorOffset;
 
         
-        if (ev.target == tdata.prevTarget) {
-            if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs)) return;
+        if (ev.target == tdata.prevTarget && tdata.isPopupCurrentlyDisplayed === true) {
+            if ((rp == tdata.prevRangeNode) && (ro == tdata.prevRangeOfs) && window.zhongwen.test<2) {
+                return;
+            }
         }
-
+         
         tdata.prevTarget = ev.target;
         tdata.prevRangeNode = rp;
         tdata.prevRangeOfs = ro;
