@@ -48,6 +48,10 @@
   float: right;
 }
 
+#zhongwen-window .plecoSymbol {
+  float: right;
+}
+
 #zhongwen-window .w-def {
   font-size: 16px;
 }

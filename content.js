@@ -666,13 +666,15 @@ var zhongwenContent = {
             var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
             fragment.appendChild(p[0]);
 
-            //add delete symbol to the right of the (first row) pinyin
+              //add delete symbol to the right of the (first row) pinyin
             if (i == 0) {
                 var deleteSymbol = document.createElement("span");
                 deleteSymbol.textContent = "\u2718";
                 deleteSymbol.className = "deleteSymbol"
                 fragment.appendChild(deleteSymbol);
             }
+          
+
 
             // Zhuyin
 
@@ -694,10 +696,30 @@ var zhongwenContent = {
             defSpan.className = defClass;
             fragment.appendChild(document.createElement('br'));
             fragment.appendChild(defSpan);
+            //if last row we want to add the pleco symbol
+            if(i < entry.data.length-1){
             fragment.appendChild(document.createElement('br'));
+            }
+           else {
+            var plecoSymbol = document.createElement('div');
+            plecoSymbol.className = 'plecoSymbol'
+            var img = document.createElement('IMG');
+            var url=browser.runtime.getURL("images/plecoldpi24.png");
+            img.src=url;  
+            img.className='plecoSymbol';
+            var a = document.createElement('a');
+            a.href = 'plecoapi://x-callback-url/s?q='+texts[0][1];
+            console.log("e[1] "+e[1]);
+            console.log("e[2] "+e[2]);
+            console.log("word "+word);
+            //console.log("p[2] "+p[2]);
+            a.appendChild(img);
+            plecoSymbol.appendChild(a);
+            fragment.appendChild(plecoSymbol);
+            }
 
-            // Grammar
-            if (window.zhongwen.config.grammar != 'no' &&
+        // Grammar
+            /* if (window.zhongwen.config.grammar != 'no' &&
                 entry.grammar && entry.grammar.index == i) {
                 var grammarSpan = document.createElement('span');
                 grammarSpan.textContent = 'Press "g" for grammar and usage notes.';
@@ -706,9 +728,11 @@ var zhongwenContent = {
                 fragment.appendChild(grammarSpan);
                 fragment.appendChild(document.createElement('br'));
                 fragment.appendChild(document.createElement('br'));
-            }
+            }*/
 
-            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+
+        texts[i] = [e[2], e[1], p[1], translation, e[3]];
+
         }
         if (entry.more) {
             var moreSpan = document.createElement('span');
@@ -716,6 +740,7 @@ var zhongwenContent = {
             fragment.appendChild(moreSpan);
             fragment.appendChild(document.createElement('br'));
         }
+           
 
         this.lastFound = texts;
         this.lastFound.grammar = entry.grammar;
