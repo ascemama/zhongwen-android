@@ -40,6 +40,12 @@ function loadVals() {
         document.optform.zhuyin[0].selected = true;
     }
 
+    if (localStorage['pleco'] === 'no') {
+        document.optform.pleco[1].selected = true;
+    } else {
+        document.optform.pleco[0].selected = true;
+    }
+
     /* For now no grammar
     if (localStorage['grammar'] === 'no') {
         document.optform.grammar[1].selected = true;
@@ -81,6 +87,8 @@ function storeVals() {
     localStorage['zhuyin'] = document.optform.zhuyin.value;
     backgroundPage.zhongwenMain.options.zhuyin = localStorage['zhuyin'];
 
+    localStorage['pleco'] = document.optform.pleco.value;
+    backgroundPage.zhongwenMain.options.pleco = localStorage['pleco'];
     /*
     localStorage['grammar'] = document.optform.grammar.value;
     backgroundPage.zhongwenMain.options.grammar = localStorage['grammar'];

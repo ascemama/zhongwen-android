@@ -72,7 +72,8 @@ var zhongwenMain = {
           'zhuyin': 'no',
           'grammar': 'no',
           'popupTime':4,
-          'simpTrad':'auto'
+          'simpTrad':'auto',
+          'pleco':'yes'
         }
       })
       let dictionaryPromise = zhongwenMain.loadDictionary()

@@ -697,22 +697,22 @@ var zhongwenContent = {
             fragment.appendChild(document.createElement('br'));
             fragment.appendChild(defSpan);
             //if last row we want to add the pleco symbol
-            if(i < entry.data.length-1){
+            if(i < entry.data.length-1  || window.zhongwen.config.pleco == 'no'){
             fragment.appendChild(document.createElement('br'));
             }
            else {
             var plecoSymbol = document.createElement('div');
             plecoSymbol.className = 'plecoSymbol'
             var img = document.createElement('IMG');
-            var url=browser.runtime.getURL("images/plecoldpi24.png");
+            var url=browser.runtime.getURL("images/pleco25.png");
             img.src=url;  
             img.className='plecoSymbol';
             var a = document.createElement('a');
             a.href = 'plecoapi://x-callback-url/s?q='+texts[0][1];
-            console.log("e[1] "+e[1]);
+           /* console.log("e[1] "+e[1]);
             console.log("e[2] "+e[2]);
             console.log("word "+word);
-            //console.log("p[2] "+p[2]);
+            */
             a.appendChild(img);
             plecoSymbol.appendChild(a);
             fragment.appendChild(plecoSymbol);
