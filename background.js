@@ -79,6 +79,7 @@ browser.runtime.onMessage.addListener(function(request, sender, response) {
 
             break;
         case 'config':
+            //console.log("backgroundjs:"+JSON.stringify(zhongwenMain.options));
              return Promise.resolve(zhongwenMain.options);
 
         default:

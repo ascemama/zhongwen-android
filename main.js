@@ -50,99 +50,82 @@
 function reportError(error) {
   console.error(`Error: ${error}`);
 }
-function ignoreError(error) {}
+function ignoreError(error) { }
 
 var zhongwenMain = {
 
-    altView: 0,
+  altView: 0,
 
-    tabIDs: {},
+  tabIDs: {},
 
-    loadDictionary: async function() {
-      let dictData = await loadDictData();
-      return new ZhongwenDictionary(...dictData);
-    },
-    init: function(){
-      let optionsPromise = browser.storage.sync.get({
-        options: {
-          'popupcolor': 'lightblue',
-          'tonecolors': 'yes',
-          'fontSize': 'small',
-          'skritterTLD': 'com',
-          'zhuyin': 'no',
-          'grammar': 'no',
-          'popupTime':4,
-          'simpTrad':'auto',
-          'pleco':'yes'
+  loadDictionary: async function () {
+    let dictData = await loadDictData();
+    return new ZhongwenDictionary(...dictData);
+  },
+  init: function () {
+
+    let optionsPromise = browser.storage.sync.get('options');
+    let dictionaryPromise = zhongwenMain.loadDictionary();
+    Promise.all([optionsPromise, dictionaryPromise]).then(
+      ([storage, dictionary]) => {
+        this.dict = dictionary;
+        if (typeof storage.options === 'undefined') {
+          this.options = {
+            'popupcolor': 'lightblue',
+            'tonecolors': 'yes',
+            'fontSize': 'small',
+            'skritterTLD': 'com',
+            'zhuyin': 'no',
+            'grammar': 'no',
+            'popupTime': 4,
+            'simpTrad': 'auto',
+            'pleco': 'yes'
+          };
         }
-      })
-      //let optionsPromise = browser.storage.sync.get(options);
-      //let optionsPromise = browser.storage.sync.get();
-      let dictionaryPromise = zhongwenMain.loadDictionary()
-  
-      Promise.all([optionsPromise, dictionaryPromise]).then(
-        ([storage, dictionary]) => {
-  
-          this.dict = dictionary;
-         /* if(storage.options=={}){
-            this.options= {
-              'popupcolor': 'blue',
-              'tonecolors': 'yes',
-              'fontSize': 'small',
-              'skritterTLD': 'com',
-              'zhuyin': 'no',
-              'grammar': 'no',
-              'popupTime':4,
-              'simpTrad':'auto',
-              'pleco':'yes'
-            };
-          } */
-          //else{
-          this.options=storage.options;
-          //}
-        });
-
-    },
- 
-    search: function(text) {
-
-        var entry = this.dict.wordSearch(text);
-        if (entry != null) {
-            for (var i = 0; i < entry.data.length; i++) {
-                var word = entry.data[i][1];
-                if (this.dict.hasKeyword(word) && (entry.matchLen == word.length)) {
-                    // the final index should be the last one with the maximum length
-                    entry.grammar = { keyword: word, index: i };
-                }
-            }
+        else {
+          this.options = storage.options;
         }
+      });
+  },
 
-        return entry;
+  search: function (text) {
+    var entry = this.dict.wordSearch(text);
+    if (entry != null) {
+      for (var i = 0; i < entry.data.length; i++) {
+        var word = entry.data[i][1];
+        if (this.dict.hasKeyword(word) && (entry.matchLen == word.length)) {
+          // the final index should be the last one with the maximum length
+          entry.grammar = { keyword: word, index: i };
+        }
+      }
+    }
 
-    },
+    return entry;
+  },
 
-    //not use for now, maybe later
-  wordlistTab: function() {
+  //not use for now, maybe later
+  wordlistTab: function () {
     var url = browser.extension.getURL("/wordlist.html");
     var tabID = zhongwenMain.tabIDs['wordlist'];
     if (tabID) {
-      browser.tabs.get(tabID, function(tab) {
+      browser.tabs.get(tabID, function (tab) {
         if (tab && (tab.url.substr(-13) == 'wordlist.html')) {
           browser.tabs.reload(tabID);
-          browser.tabs.update(tabID, {active: true});
+          browser.tabs.update(tabID, { active: true });
         } else {
           browser.tabs.create({
             url: url
-          }, function(tab) {
+          }, function (tab) {
             zhongwenMain.tabIDs['wordlist'] = tab.id;
             browser.tabs.reload(tab.id);
           });
         }
       });
     } else {
-      browser.tabs.create({ url: url }, function(tab) {
+      browser.tabs.create({ url: url }, function (tab) {
         zhongwenMain.tabIDs['wordlist'] = tab.id;
-        browser.tabs.reload(tab.id); });
+        browser.tabs.reload(tab.id);
+      });
     }
   }
 };
