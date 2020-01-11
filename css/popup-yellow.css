@@ -44,6 +44,7 @@
 }
 #zhongwen-window .deleteSymbol {
   float: right;
+  margin-right: 0.4em;
 }
  
 #zhongwen-window .plecoSymbol {

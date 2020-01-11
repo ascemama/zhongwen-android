@@ -696,6 +696,11 @@ var zhongwenContent = {
             defSpan.className = defClass;
             fragment.appendChild(document.createElement('br'));
             fragment.appendChild(defSpan);
+
+            //store for later
+            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+
+
             //if last row we want to add the pleco symbol
             if(i < entry.data.length-1  || window.zhongwen.config.pleco == 'no'){
             fragment.appendChild(document.createElement('br'));
@@ -729,9 +734,6 @@ var zhongwenContent = {
                 fragment.appendChild(document.createElement('br'));
                 fragment.appendChild(document.createElement('br'));
             }*/
-
-
-        texts[i] = [e[2], e[1], p[1], translation, e[3]];
 
         }
         if (entry.more) {

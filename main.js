@@ -76,14 +76,31 @@ var zhongwenMain = {
           'pleco':'yes'
         }
       })
+      //let optionsPromise = browser.storage.sync.get(options);
+      //let optionsPromise = browser.storage.sync.get();
       let dictionaryPromise = zhongwenMain.loadDictionary()
   
       Promise.all([optionsPromise, dictionaryPromise]).then(
         ([storage, dictionary]) => {
   
           this.dict = dictionary;
+         /* if(storage.options=={}){
+            this.options= {
+              'popupcolor': 'blue',
+              'tonecolors': 'yes',
+              'fontSize': 'small',
+              'skritterTLD': 'com',
+              'zhuyin': 'no',
+              'grammar': 'no',
+              'popupTime':4,
+              'simpTrad':'auto',
+              'pleco':'yes'
+            };
+          } */
+          //else{
           this.options=storage.options;
-        })
+          //}
+        });
 
     },
  
