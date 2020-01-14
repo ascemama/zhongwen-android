@@ -8,7 +8,7 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
 *Note: currently chrome does not support extension on android devices.*
  
 
-<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/master/images/Screenshot.PNG"  width="250" ></a>
+<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/master/images/Screenshot_renminribao.PNG"  width="250" ></a>
 
 <br/><br/>
 
