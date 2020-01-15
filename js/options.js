@@ -9,7 +9,7 @@
 function loadVals() {
     browser.storage.sync.get('options', e => {
         //if first time, need to get the default value from the main object
-        if (JSON.stringify(e) == "{}") {
+        if (JSON.stringify(e) == '{}') {
             browser.runtime.getBackgroundPage().then(b => {
                 fillForm(b.zhongwenMain.options);
             });

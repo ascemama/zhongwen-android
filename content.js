@@ -623,23 +623,18 @@ var zhongwenContent = {
             if (!e) continue;
 
             // Hanzi
-
             if (window.zhongwen.config.simpTrad == 'auto') {
-
                 word = entry.data[i][1];
-
                 hanziClass = 'w-hanzi';
                 if (window.zhongwen.config.fontSize == 'small') {
                     hanziClass += '-small';
                 }
                 var hanziSpan = document.createElement('span');
-                //hanziSpan.textContent = e[2];
                 hanziSpan.textContent = word;
                 hanziSpan.className = hanziClass;
                 fragment.appendChild(hanziSpan);
 
             } else {
-
                 hanziClass = 'w-hanzi';
                 if (window.zhongwen.config.fontSize == 'small') {
                     hanziClass += '-small';
@@ -658,7 +653,6 @@ var zhongwenContent = {
             }
 
             // Pinyin
-
             var pinyinClass = 'w-pinyin';
             if (window.zhongwen.config.fontSize == 'small') {
                 pinyinClass += '-small';
@@ -673,18 +667,14 @@ var zhongwenContent = {
                 deleteSymbol.className = "deleteSymbol"
                 fragment.appendChild(deleteSymbol);
             }
-          
-
 
             // Zhuyin
-
             if (window.zhongwen.config.zhuyin == 'yes') {
                 fragment.appendChild(document.createElement('br'));
                 fragment.appendChild(p[2]);
             }
 
             // Definition
-
             var defClass = 'w-def';
             if (window.zhongwen.config.fontSize == 'small') {
                 defClass += '-small';
@@ -697,31 +687,29 @@ var zhongwenContent = {
             fragment.appendChild(document.createElement('br'));
             fragment.appendChild(defSpan);
 
-            //store for later
-            texts[i] = [e[2], e[1], p[1], translation, e[3]];
-
 
             //if last row we want to add the pleco symbol
             if(i < entry.data.length-1  || window.zhongwen.config.pleco == 'no'){
             fragment.appendChild(document.createElement('br'));
             }
            else {
-            var plecoSymbol = document.createElement('div');
+            let plecoSymbol = document.createElement('div');
             plecoSymbol.className = 'plecoSymbol'
-            var img = document.createElement('IMG');
-            var url=browser.runtime.getURL("images/pleco25.png");
+            let img = document.createElement('IMG');
+            let url=browser.runtime.getURL("images/pleco25.png");
             img.src=url;  
             img.className='plecoSymbol';
-            var a = document.createElement('a');
-            a.href = 'plecoapi://x-callback-url/s?q='+texts[0][1];
-           /* console.log("e[1] "+e[1]);
-            console.log("e[2] "+e[2]);
-            console.log("word "+word);
-            */
+            let a = document.createElement('a');
+            a.href = 'plecoapi://x-callback-url/s?q='+entry.data[0][1];
             a.appendChild(img);
             plecoSymbol.appendChild(a);
             fragment.appendChild(plecoSymbol);
             }
+
+            
+            //store for later
+            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+
 
         // Grammar
             /* if (window.zhongwen.config.grammar != 'no' &&

@@ -69,6 +69,7 @@ var zhongwenMain = {
     Promise.all([optionsPromise, dictionaryPromise]).then(
       ([storage, dictionary]) => {
         this.dict = dictionary;
+        //if first time usage, define default values
         if (typeof storage.options === 'undefined') {
           this.options = {
             'popupcolor': 'lightblue',
@@ -131,5 +132,4 @@ var zhongwenMain = {
 };
 
 
-//browser.tabs.getCurrent().then(t => { zhongwenMain.enable(t);});
 zhongwenMain.init();

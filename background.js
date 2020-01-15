@@ -2,6 +2,7 @@
         Zhongwen - A Chinese-English Popup Dictionary
         Original work Copyright (C) 2012 Christian Schiller
         Modified work Copyright (C) 2017 Leonard Lausen
+        Modified work Copyright (C) 2019 Antoine Scemama
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
 */
 
@@ -79,7 +80,6 @@ browser.runtime.onMessage.addListener(function(request, sender, response) {
 
             break;
         case 'config':
-            //console.log("backgroundjs:"+JSON.stringify(zhongwenMain.options));
              return Promise.resolve(zhongwenMain.options);
 
         default:
