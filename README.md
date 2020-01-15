@@ -21,6 +21,7 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
   syllables, depending on the tone of the Chinese character.
 - Highlights the characters whose translation is displayed in the pop-up
   window.
+- Easy link to pleco for thorough character explanation.
 - Some Zhongwen extension laptop features are currently not supported: interfacte to Skritter/grammar/vocabulary list.
  
 
