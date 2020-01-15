@@ -1,4 +1,4 @@
-#zhongwen-window, #zhongwen-window * {
+#zhongwen-window * {
   width: auto;
   height: auto;
   background: transparent;
@@ -44,6 +44,14 @@
 }
 #zhongwen-window .deleteSymbol {
   float: right;
+  margin-right: 0.4em;
+}
+ 
+#zhongwen-window .plecoSymbol {
+  float: right;
+  margin-right:0.4em;
+  width: 1.5em;
+  margin-left:1.5em;
 }
 
 #zhongwen-window .w-def {

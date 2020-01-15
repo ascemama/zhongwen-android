@@ -8,7 +8,7 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
 *Note: currently chrome does not support extension on android devices.*
  
 
-<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/master/images/Screenshot.PNG"  width="250" ></a>
+<a href="url"><img src="https://github.com/ascemama/zhongwen-android/blob/master/images/Screenshot_renminribao.PNG"  width="250" ></a>
 
 <br/><br/>
 
@@ -21,19 +21,25 @@ It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard
   syllables, depending on the tone of the Chinese character.
 - Highlights the characters whose translation is displayed in the pop-up
   window.
+- Easy link to pleco for thorough character explanation.
 - Some Zhongwen extension laptop features are currently not supported: interfacte to Skritter/grammar/vocabulary list.
  
 
 
 ## Installation
 
-On your android device, open firefox go to https://addons.mozilla.org/en-US/firefox/ and search for zhongwen-android.
+On your android device, open firefox go to https://addons.mozilla.org/en-US/firefox/ and search for zhongwen-android. 
 
 
 ## How Does It Work?
-Once Zhongwen is installed on your android device you can directly use it if you browse to a page containing chinese character and press on one of those. The popup will show up and be displayed for 4 seconds (configurable). You can also make the popup disappear by clicking on it.
-If you want to turn the extension off, click on the top right of the firefox window and goto the addons configuration, there you can turn on/off each addon.
-
+Once Zhongwen is installed on your android device you can directly use it if you browse to a page containing chinese character and press on one of those. The popup will show up and be displayed for 4 seconds (configurable). You can also make the popup disappear by clicking on it. If you click on the pleco symbol in the bottom right it will open the pleco app to do a more detailed search. 
+If you want to turn the extension off, click on the top right of the firefox window and goto the addons/modules configuration, there you can turn on/off each addon.
+In the addons configuration panel you can set:
+- Default time the popup will be displayed before disappearing
+- If you want to see both simplified/traditional character or just the one that match what you are reading
+- The popup color
+- To see the Zhuyin version
+- To not display the pleco symbol if you don't want to use the pleco link functionality
 
 ## What Information Does It Show?
 By default, the pop-up window shows the following pieces of information:

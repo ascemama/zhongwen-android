@@ -623,23 +623,18 @@ var zhongwenContent = {
             if (!e) continue;
 
             // Hanzi
-
             if (window.zhongwen.config.simpTrad == 'auto') {
-
                 word = entry.data[i][1];
-
                 hanziClass = 'w-hanzi';
                 if (window.zhongwen.config.fontSize == 'small') {
                     hanziClass += '-small';
                 }
                 var hanziSpan = document.createElement('span');
-                //hanziSpan.textContent = e[2];
                 hanziSpan.textContent = word;
                 hanziSpan.className = hanziClass;
                 fragment.appendChild(hanziSpan);
 
             } else {
-
                 hanziClass = 'w-hanzi';
                 if (window.zhongwen.config.fontSize == 'small') {
                     hanziClass += '-small';
@@ -658,7 +653,6 @@ var zhongwenContent = {
             }
 
             // Pinyin
-
             var pinyinClass = 'w-pinyin';
             if (window.zhongwen.config.fontSize == 'small') {
                 pinyinClass += '-small';
@@ -666,7 +660,7 @@ var zhongwenContent = {
             var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
             fragment.appendChild(p[0]);
 
-            //add delete symbol to the right of the (first row) pinyin
+              //add delete symbol to the right of the (first row) pinyin
             if (i == 0) {
                 var deleteSymbol = document.createElement("span");
                 deleteSymbol.textContent = "\u2718";
@@ -675,14 +669,12 @@ var zhongwenContent = {
             }
 
             // Zhuyin
-
             if (window.zhongwen.config.zhuyin == 'yes') {
                 fragment.appendChild(document.createElement('br'));
                 fragment.appendChild(p[2]);
             }
 
             // Definition
-
             var defClass = 'w-def';
             if (window.zhongwen.config.fontSize == 'small') {
                 defClass += '-small';
@@ -694,10 +686,33 @@ var zhongwenContent = {
             defSpan.className = defClass;
             fragment.appendChild(document.createElement('br'));
             fragment.appendChild(defSpan);
-            fragment.appendChild(document.createElement('br'));
 
-            // Grammar
-            if (window.zhongwen.config.grammar != 'no' &&
+
+            //if last row we want to add the pleco symbol
+            if(i < entry.data.length-1  || window.zhongwen.config.pleco == 'no'){
+            fragment.appendChild(document.createElement('br'));
+            }
+           else {
+            let plecoSymbol = document.createElement('div');
+            plecoSymbol.className = 'plecoSymbol'
+            let img = document.createElement('IMG');
+            let url=browser.runtime.getURL("images/pleco25.png");
+            img.src=url;  
+            img.className='plecoSymbol';
+            let a = document.createElement('a');
+            a.href = 'plecoapi://x-callback-url/s?q='+entry.data[0][1];
+            a.appendChild(img);
+            plecoSymbol.appendChild(a);
+            fragment.appendChild(plecoSymbol);
+            }
+
+            
+            //store for later
+            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+
+
+        // Grammar
+            /* if (window.zhongwen.config.grammar != 'no' &&
                 entry.grammar && entry.grammar.index == i) {
                 var grammarSpan = document.createElement('span');
                 grammarSpan.textContent = 'Press "g" for grammar and usage notes.';
@@ -706,9 +721,8 @@ var zhongwenContent = {
                 fragment.appendChild(grammarSpan);
                 fragment.appendChild(document.createElement('br'));
                 fragment.appendChild(document.createElement('br'));
-            }
+            }*/
 
-            texts[i] = [e[2], e[1], p[1], translation, e[3]];
         }
         if (entry.more) {
             var moreSpan = document.createElement('span');
@@ -716,6 +730,7 @@ var zhongwenContent = {
             fragment.appendChild(moreSpan);
             fragment.appendChild(document.createElement('br'));
         }
+           
 
         this.lastFound = texts;
         this.lastFound.grammar = entry.grammar;
