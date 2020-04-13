@@ -43,18 +43,24 @@
   font-size: 18px;
   color: #C0FFC0;
 }
-
+ 
 #zhongwen-window .deleteSymbol {
   float: right;
   margin-right: 0.4em;
+  width: 0.7em;
 }
 
-#zhongwen-window .plecoSymbol {
-  float: right;
+#zhongwen-window .imgPleco {
+  float:right;
+  margin-left:2em;
+  margin-top:2em; 
   margin-right:0.4em;
-  width: 1.5em;
-  margin-left:1.5em;
-} 
+  height:150%;
+}
+
+#zhongwen-window .surrImgPleco {
+  float:right;
+}
 
 #zhongwen-window .w-def {
   font-size: 16px;
