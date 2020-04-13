@@ -615,7 +615,7 @@ var zhongwenContent = {
         var texts = [];
         var hanziClass;
         var fragment = document.createDocumentFragment();
-
+        fragment.className="fragment";
         if (entry == null) return fragment;
 
         for (var i = 0; i < entry.data.length; ++i) {
@@ -693,13 +693,13 @@ var zhongwenContent = {
             fragment.appendChild(document.createElement('br'));
             }
            else {
-            let plecoSymbol = document.createElement('div');
-            plecoSymbol.className = 'plecoSymbol'
+            let plecoSymbol = document.createElement('span');
             let img = document.createElement('IMG');
             let url=browser.runtime.getURL("images/pleco25.png");
             img.src=url;  
-            img.className='plecoSymbol';
+            img.className='imgPleco';
             let a = document.createElement('a');
+            a.className="surrImgPleco";
             a.href = 'plecoapi://x-callback-url/s?q='+entry.data[0][1];
             a.appendChild(img);
             plecoSymbol.appendChild(a);

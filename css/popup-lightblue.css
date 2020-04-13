@@ -32,7 +32,7 @@
   border-radius: 5px;
   box-shadow: 10px 10px 5px -5px #999;
 }
-
+ 
 #zhongwen-window .w-hanzi {
   font-size: 32px;
   color: #3082BF;
@@ -50,11 +50,16 @@
   width: 0.7em;
 }
 
-#zhongwen-window .plecoSymbol {
-  float: right;
+#zhongwen-window .imgPleco {
+  float:right;
+  margin-left:2em;
+  margin-top:2em; 
   margin-right:0.4em;
-  width: 1.5em;
-  margin-left:1.5em;
+  height:150%;
+}
+
+#zhongwen-window .surrImgPleco {
+  float:right;
 }
 
 #zhongwen-window .w-def {
