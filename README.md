@@ -5,7 +5,8 @@ by simply clicking on them.
 
 It is a port to Firefox on Android of the (desktop) Firefox extension of Leonard Lausen (https://github.com/leezu/zhongwen) which itself is a port of the Chrome extension of Christian Schiller (https://github.com/cschiller/zhongwen).
 
-# (13.05.2020) - The original zhongwen addon from Christian Schiller does support Android since V5. It is better maintained and is to be prefered for long time usage. Currently the only advantage of using Zhongwen-android is the possibility to open a work in pleco.
+# IMPORTANT (13.05.2020)
+**The original zhongwen addon from Christian Schiller does support Android since V5. It is better maintained and is to be prefered for long time usage. Currently the only advantage of using Zhongwen-android is the possibility to open a work in pleco.**
 
 *Note: currently chrome does not support extension on android devices.*
  
